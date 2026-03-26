@@ -1,0 +1,491 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Local Man Power Service Provider</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="{% static 'core/js/session-manager.js' %}"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; min-height: 100vh; }
+
+        header { display: flex; justify-content: space-between; padding: 15px 50px; background: #2c3e50; color: white; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 700; color: white; text-decoration: none; }
+        nav { display: flex; align-items: center; }
+        nav > a { color: white; text-decoration: none; margin-left: 20px; font-weight: 500; transition: opacity 0.2s; }
+        nav > a:hover { opacity: 0.8; }
+        
+        /* Dropdown Styles */
+        .profile-btn {
+            display: flex; align-items: center; gap: 9px; cursor: pointer;
+            padding: 5px 10px; border-radius: 25px; transition: background 0.2s; position: relative;
+            margin-left: 20px;
+        }
+        .profile-btn:hover { background: rgba(255,255,255,0.08); }
+        .profile-avatar {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.8rem; color: white;
+        }
+        .profile-btn span { color: #e2e8f0; font-size: 0.85rem; font-weight: 500; }
+        .profile-btn > i { color: #94a3b8; font-size: 0.7rem; transition: transform 0.2s; }
+        .profile-btn.active > i { transform: rotate(180deg); }
+        
+        .dropdown-menu-custom {
+            display: none; position: absolute; top: 100%; right: 0; margin-top: 10px;
+            background: white; border-radius: 12px; min-width: 210px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15); z-index: 9999; overflow: visible;
+            border: 1px solid #f1f5f9;
+        }
+        .dropdown-menu-custom.show { display: block !important; animation: slideDown 0.2s ease-out; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+        .dropdown-menu-custom a {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 18px; color: #374151; font-size: 0.9rem; font-weight: 500; text-decoration: none;
+            transition: all 0.15s; text-align: left; margin-left: 0;
+        }
+        .dropdown-menu-custom a:hover { background: #f8fafc; color: #1e293b; }
+        .dropdown-menu-custom a i { color: #6366f1; width: 22px; font-size: 1rem; text-align: center; }
+        .dropdown-menu-custom a.logout { color: #ef4444; }
+        .dropdown-menu-custom a.logout:hover { background: #fee2e2; color: #b91c1c; }
+        .dropdown-menu-custom a.logout i { color: #ef4444; }
+        .dropdown-divider { height: 1px; background: #f1f5f9; margin: 4px 0; }
+
+        .profile-container { max-width: 800px; margin: 40px auto; padding: 20px; }
+
+        .profile-card { background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+
+        .profile-header { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); padding: 40px; text-align: center; color: white; }
+        .profile-header img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid rgba(255,255,255,0.3); margin-bottom: 15px; object-fit: cover; }
+        .profile-header h1 { font-size: 28px; margin-bottom: 5px; }
+        .profile-header p { opacity: 0.85; font-size: 16px; }
+
+        .profile-body { padding: 40px; }
+        .section-title { font-size: 18px; font-weight: 700; color: #2c3e50; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #f1f5f9; }
+
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+        .info-item { display: flex; align-items: center; gap: 12px; }
+        .info-icon { width: 40px; height: 40px; background: #f1f5f9; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #2c3e50; }
+        .info-content label { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; display: block; margin-bottom: 2px; }
+        .info-content span { font-size: 15px; color: #1e293b; font-weight: 600; }
+
+        /* Edit form */
+        .edit-form { display: none; }
+        .edit-form.active { display: block; }
+        .view-mode.hidden { display: none; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-group label { font-size: 13px; font-weight: 600; color: #555; margin-bottom: 5px; }
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #2c3e50; }
+        .form-group textarea { height: 80px; resize: none; }
+
+        .profile-actions { display: flex; gap: 15px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
+        .action-btn { padding: 12px 28px; border-radius: 10px; font-weight: 600; cursor: pointer; border: none; font-size: 15px; display: flex; align-items: center; gap: 8px; text-decoration: none; transition: all 0.2s; }
+        .btn-edit { background: #2c3e50; color: white; }
+        .btn-edit:hover { background: #1a252f; }
+        .btn-save { background: #28a745; color: white; }
+        .btn-save:hover { background: #218838; }
+        .btn-cancel-edit { background: #6c757d; color: white; }
+        .btn-cancel-edit:hover { background: #5a6268; }
+        .btn-back { background: #f8f9fa; color: #2c3e50; border: 1px solid #ddd; }
+        .btn-back:hover { background: #eee; }
+
+        .msg { padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; display: none; text-align: center; font-weight: 500; }
+        .msg.success { background: #d4edda; color: #155724; display: block; }
+        .msg.error { background: #f8d7da; color: #721c24; display: block; }
+
+        @media (max-width: 600px) {
+            .info-grid, .form-grid { grid-template-columns: 1fr; }
+            .profile-body { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="{% url 'home' %}" class="logo">Local Man Power<span> Service Provider</span></a>
+    <nav>
+        <a href="{% url 'home' %}" id="navHome">Home</a>
+        
+        <div class="user-profile">
+            <div class="profile-btn" onclick="toggleDrop()">
+                <div class="profile-avatar" id="navAvt">U</div>
+                <span id="navNm">User</span>
+                <i class="fas fa-chevron-down"></i>
+                <div class="dropdown-menu-custom" id="dd">
+                    <div class="dd-header" style="padding: 16px 18px; border-bottom: 1px solid #f1f5f9; cursor: default;">
+                        <div style="font-weight: 700; color: #1e293b; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="ddName">User</div>
+                        <div style="color: #64748b; font-size: 0.8rem; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="ddEmail">user@example.com</div>
+                    </div>
+                    <a href="{% url 'provider_dashboard' %}" id="ddDashboard" style="display:none;"><i class="fas fa-chart-pie"></i> Dashboard</a>
+                    <a href="{% url 'my_profile' %}"><i class="fas fa-user-circle"></i> My Profile</a>
+                    <a href="{% url 'my_bookings' %}" id="ddMyBookings"><i class="fas fa-list"></i> My Bookings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="logout" href="#" onclick="doLogout();return false;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<script>
+// Show dashboard link for providers
+(function() {
+    try {
+        const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        if (u.userType === 'provider') {
+            document.getElementById('ddDashboard').style.display = 'flex';
+            document.getElementById('ddMyBookings').href = "{% url 'provider_dashboard' %}";
+        } else if (u.userType === 'admin') {
+            const dashLink = document.getElementById('ddDashboard');
+            dashLink.style.display = 'flex';
+            dashLink.href = "{% url 'admin_dashboard' %}";
+            document.getElementById('ddMyBookings').style.display = 'none';
+            const navHome = document.getElementById('navHome');
+            if (navHome) navHome.style.display = 'none';
+        }
+        // Set initials, name, and email right away if possible
+        if (u) {
+            const nm = u.fullName || u.first_name || u.username || 'User';
+            const em = u.email || 'user@example.com';
+            document.getElementById('navNm').textContent = nm;
+            document.getElementById('ddName').textContent = nm;
+            document.getElementById('ddEmail').textContent = em;
+            document.getElementById('navAvt').textContent = nm.substring(0,2).toUpperCase();
+        }
+    } catch(e) {}
+})();
+function toggleDrop(){
+    const dd = document.getElementById('dd');
+    dd.classList.toggle('show');
+    document.querySelector('.profile-btn').classList.toggle('active');
+}
+document.addEventListener('click', e => {
+    const dd = document.getElementById('dd');
+    const pb = document.querySelector('.profile-btn');
+    if (pb && dd && !e.target.closest('.profile-btn') && !e.target.closest('.dropdown-menu-custom')) {
+        dd.classList.remove('show');
+        pb.classList.remove('active');
+    }
+});
+function doLogout(){
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('authToken');
+    location.href = "{% url 'login' %}";
+}
+</script>
+
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="profile-header">
+            <img id="avatarImg" src="https://picsum.photos/seed/profile/120/120" alt="Profile">
+            <h1 id="headerName">Loading...</h1>
+            <p id="headerType">User</p>
+        </div>
+
+        <div class="profile-body">
+            <div id="statusMsg" class="msg"></div>
+
+            <!-- VIEW MODE -->
+            <div id="viewMode">
+                <h3 class="section-title">Personal Information</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fas fa-user"></i></div>
+                        <div class="info-content"><label>Full Name</label><span id="vFullName">—</span></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fas fa-at"></i></div>
+                        <div class="info-content"><label>Username</label><span id="vUsername">—</span></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                        <div class="info-content"><label>Email</label><span id="vEmail">—</span></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fas fa-phone"></i></div>
+                        <div class="info-content"><label>Phone</label><span id="vPhone">—</span></div>
+                    </div>
+                    <div class="info-item" id="vProviderRow" style="display:none;">
+                        <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="info-content"><label>Location</label><span id="vLocation">—</span></div>
+                    </div>
+                    <div class="info-item" id="vPriceRow" style="display:none;">
+                        <div class="info-icon"><i class="fas fa-rupee-sign"></i></div>
+                        <div class="info-content"><label>Price/hr</label><span id="vPrice">—</span></div>
+                    </div>
+                </div>
+
+                <div class="profile-actions">
+                    <a href="{% url 'home' %}" class="action-btn btn-back" id="btnBack"><i class="fas fa-arrow-left"></i> Back</a>
+                    <button class="action-btn btn-edit" onclick="showEditForm()"><i class="fas fa-edit"></i> Edit Profile</button>
+                </div>
+            </div>
+
+            <!-- EDIT MODE -->
+            <div id="editMode" class="edit-form">
+                <h3 class="section-title">Edit Profile</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" id="eFirstName" placeholder="First name">
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" id="eLastName" placeholder="Last name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="eEmail" placeholder="Email address">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" id="ePhone" placeholder="Phone number">
+                    </div>
+                    <div class="form-group full" id="eProviderFields" style="display:none;">
+                        <label>Location</label>
+                        <input type="text" id="eLocation" placeholder="Your city / area">
+                    </div>
+                    <div class="form-group" id="ePriceField" style="display:none;">
+                        <label>Price per Hour (₹)</label>
+                        <input type="number" id="ePrice" placeholder="e.g. 500">
+                    </div>
+                    <div class="form-group" id="ePhoneProviderField" style="display:none;">
+                        <label>Business Phone</label>
+                        <input type="text" id="eBusinessPhone" placeholder="Business contact number">
+                    </div>
+                    <div class="form-group" id="eUpiField" style="display:none;">
+                        <label>UPI ID</label>
+                        <input type="text" id="eUpiId" placeholder="e.g. yourname@upi">
+                    </div>
+                    <div class="form-group full" id="eDescField" style="display:none;">
+                        <label>Description</label>
+                        <textarea id="eDescription" placeholder="Describe your services..."></textarea>
+                    </div>
+                    <div class="form-group full" style="align-items: flex-start; margin-bottom: 20px;">
+                        <label>Profile Picture</label>
+                        <div style="display:flex; align-items:center; gap:20px;">
+                            <img id="eImagePreview" src="https://picsum.photos/seed/profile/120/120" style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:2px solid #ddd;">
+                            <input type="file" id="eProfilePic" accept="image/*" onchange="previewImage(event)">
+                        </div>
+                        <input type="hidden" id="eProfilePicUrl">
+                    </div>
+                </div>
+
+                <div class="profile-actions">
+                    <button class="action-btn btn-cancel-edit" onclick="hideEditForm()"><i class="fas fa-times"></i> Cancel</button>
+                    <button class="action-btn btn-save" onclick="saveProfile()"><i class="fas fa-save"></i> Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+<script src="{% static 'core/js/firebase-config.js' %}"></script>
+<script src="{% static 'core/js/api-service.js' %}"></script>
+<script>
+let currentUser = null;
+
+function previewImage(event) {
+    const file = event.target.files[0];
+    if (file) {
+        document.getElementById('eImagePreview').src = URL.createObjectURL(file);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    // Try API first, fall back to localStorage
+    const token = localStorage.getItem('authToken');
+    if (token) {
+        try {
+            const res = await window.apiService.getMyProfile();
+            if (res.success) {
+                currentUser = res.data;
+                // Merge provider profile fields into top-level for convenience
+                if (res.data.providerProfile) {
+                    currentUser = { ...res.data, ...res.data.providerProfile, ...res.data };
+                }
+                renderView();
+                return;
+            }
+        } catch(e) { console.warn('API profile failed, using localStorage'); }
+    }
+    // Fallback
+    currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    if (!currentUser) { window.location.href = "{% url 'login' %}"; return; }
+    renderView();
+});
+
+function renderView() {
+    const u = currentUser;
+    const fullName = u.fullName || `${u.first_name || ''} ${u.last_name || ''}`.trim() || u.username;
+    // profile_picture is set by backend to the media URL of the uploaded image
+    const profileImg = u.profile_picture || `https://picsum.photos/seed/${u.username || 'user'}/120/120`;
+    
+    document.getElementById('avatarImg').src = profileImg;
+    document.getElementById('eImagePreview').src = profileImg;
+    document.getElementById('eProfilePicUrl').value = profileImg;
+    
+    document.getElementById('headerName').textContent = fullName || 'User';
+    document.getElementById('headerType').textContent = (u.userType || u.user_type || 'customer').charAt(0).toUpperCase() + (u.userType || u.user_type || 'customer').slice(1);
+
+    document.getElementById('vFullName').textContent = fullName || '—';
+    document.getElementById('vUsername').textContent = u.username || '—';
+    document.getElementById('vEmail').textContent = u.email || '—';
+    document.getElementById('vPhone').textContent = u.phone || '—';
+
+    const isProvider = (u.userType || u.user_type) === 'provider';
+    const isAdmin = (u.userType || u.user_type) === 'admin';
+    
+    if (isProvider) {
+        document.getElementById('vProviderRow').style.display = 'flex';
+        document.getElementById('vPriceRow').style.display = 'flex';
+        document.getElementById('vLocation').textContent = u.location || '—';
+        document.getElementById('vPrice').textContent = u.price ? `₹${u.price}/hr` : '—';
+        
+        const navHome = document.getElementById('navHome');
+        if (navHome) navHome.style.display = 'none';
+        
+        const btnBack = document.getElementById('btnBack');
+        if (btnBack) btnBack.href = "{% url 'provider_dashboard' %}";
+    } else if (isAdmin) {
+        const navHome = document.getElementById('navHome');
+        if (navHome) navHome.style.display = 'none';
+        
+        const btnBack = document.getElementById('btnBack');
+        if (btnBack) btnBack.href = "{% url 'admin_dashboard' %}";
+    }
+}
+
+function showEditForm() {
+    const u = currentUser;
+    const nameParts = (u.fullName || '').split(' ');
+    document.getElementById('eFirstName').value = u.first_name || nameParts[0] || '';
+    document.getElementById('eLastName').value = u.last_name || nameParts.slice(1).join(' ') || '';
+    document.getElementById('eEmail').value = u.email || '';
+    document.getElementById('ePhone').value = u.phone || '';
+
+    const isProvider = (u.userType || u.user_type) === 'provider';
+    if (isProvider) {
+        document.getElementById('eProviderFields').style.display = 'block';
+        document.getElementById('ePriceField').style.display = 'block';
+        document.getElementById('ePhoneProviderField').style.display = 'block';
+        document.getElementById('eUpiField').style.display = 'block';
+        document.getElementById('eDescField').style.display = 'block';
+        document.getElementById('eLocation').value = u.location || '';
+        document.getElementById('ePrice').value = u.price || '';
+        document.getElementById('eBusinessPhone').value = u.phone || '';
+        document.getElementById('eUpiId').value = u.upi_id || (u.providerProfile && u.providerProfile.upi_id) || '';
+        document.getElementById('eDescription').value = u.description || '';
+    }
+
+    document.getElementById('viewMode').style.display = 'none';
+    document.getElementById('editMode').classList.add('active');
+}
+
+function hideEditForm() {
+    document.getElementById('viewMode').style.display = 'block';
+    document.getElementById('editMode').classList.remove('active');
+    document.getElementById('statusMsg').className = 'msg';
+}
+
+async function saveProfile() {
+    const msgEl = document.getElementById('statusMsg');
+    const fileInput = document.getElementById('eProfilePic');
+    const token = localStorage.getItem('authToken');
+    const headers = token ? { 'Authorization': 'Bearer ' + token } : {};
+
+    // Upload image first if a new file was selected
+    if (fileInput.files.length > 0) {
+        msgEl.textContent = 'Uploading image... Please wait.';
+        msgEl.className = 'msg success';
+
+        const formData = new FormData();
+        formData.append('profile_image', fileInput.files[0]);
+
+        try {
+            const uploadRes = await fetch('/api/profile/upload-image/', {
+                method: 'POST',
+                headers: headers,
+                body: formData,
+            });
+            const uploadData = await uploadRes.json();
+            if (uploadData.success) {
+                document.getElementById('eProfilePicUrl').value = uploadData.profile_picture;
+                document.getElementById('avatarImg').src = uploadData.profile_picture;
+                document.getElementById('eImagePreview').src = uploadData.profile_picture;
+                // Update localStorage
+                if (currentUser) {
+                    currentUser.profile_picture = uploadData.profile_picture;
+                    const stored = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                    if (stored.user) stored.user.profile_picture = uploadData.profile_picture;
+                    else stored.profile_picture = uploadData.profile_picture;
+                    localStorage.setItem('currentUser', JSON.stringify(stored));
+                }
+            } else {
+                msgEl.textContent = 'Image upload failed. Please try again.';
+                msgEl.className = 'msg error';
+                return;
+            }
+        } catch (err) {
+            console.error('Image upload failed:', err);
+            msgEl.textContent = 'Image upload failed. Please try again.';
+            msgEl.className = 'msg error';
+            return;
+        }
+    }
+
+    const payload = {
+        first_name: document.getElementById('eFirstName').value.trim(),
+        last_name: document.getElementById('eLastName').value.trim(),
+        email: document.getElementById('eEmail').value.trim(),
+        phone: document.getElementById('ePhone').value.trim(),
+        profile_picture: document.getElementById('eProfilePicUrl').value,
+    };
+
+    const isProvider = (currentUser.userType || currentUser.user_type) === 'provider';
+    if (isProvider) {
+        payload.location = document.getElementById('eLocation').value.trim();
+        payload.price_per_hour = document.getElementById('ePrice').value.trim();
+        payload.phone_number = document.getElementById('eBusinessPhone').value.trim();
+        payload.description = document.getElementById('eDescription').value.trim();
+        const upiField = document.getElementById('eUpiId');
+        if (upiField) payload.upi_id = upiField.value.trim();
+    }
+
+    try {
+        const res = await window.apiService.updateMyProfile(payload);
+        if (res.success) {
+            currentUser = { ...currentUser, ...res.data };
+            renderView();
+            hideEditForm();
+            msgEl.textContent = 'Profile updated successfully!';
+            msgEl.className = 'msg success';
+            setTimeout(() => { msgEl.className = 'msg'; }, 3000);
+        } else {
+            msgEl.textContent = res.message || 'Update failed. Please try again.';
+            msgEl.className = 'msg error';
+        }
+    } catch(e) {
+        console.error(e);
+        document.getElementById('statusMsg').textContent = 'Error saving profile.';
+        document.getElementById('statusMsg').className = 'msg error';
+    }
+}
+</script>
+{% include "core/chatbot_include.html" %}
+</body>
+</html>

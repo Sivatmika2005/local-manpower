@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Service - Local Man Power Service Provider</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="{% static 'core/js/session-manager.js' %}"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; min-height: 100vh; color: #333; }
+        header { display: flex; justify-content: space-between; padding: 15px 50px; background: #2c3e50; color: white; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .logo { font-size: 1.5rem; font-weight: 700; color: white; text-decoration: none; }
+        nav a { color: white; text-decoration: none; margin-left: 20px; }
+        .booking-container { max-width: 800px; margin: 40px auto; background: white; border-radius: 18px; padding: 30px; box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+        .booking-header { border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 25px; }
+        .provider-summary { display: flex; align-items: center; gap: 20px; background: #fcfcfc; padding: 18px; border-radius: 12px; border: 1px solid #eee; margin-bottom: 30px; }
+        .provider-summary img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; }
+        .booking-form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { display: flex; flex-direction: column; }
+        .full-width { grid-column: 1 / -1; }
+        label { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+        input, select, textarea { padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none; }
+        textarea { height: 100px; resize: none; }
+        .btn-confirm { width: 100%; padding: 15px; background: #2c3e50; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 30px; }
+        .btn-confirm:disabled { background: #ccc; cursor: not-allowed; }
+        .success-card { text-align: center; padding: 40px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="{% url 'home' %}" class="logo">Local Man Power<span> Service Provider</span></a>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <button onclick="history.back()" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.4); color:white; padding:7px 16px; border-radius:20px; cursor:pointer; font-size:14px; margin-left:10px;">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+    </nav>
+</header>
+
+<!-- Django injects provider data here as JSON — no Django tags inside JS -->
+<script id="provider-data" type="application/json">
+{% if provider %}
+{
+    "id": {{ provider.id }},
+    "fullName": "{{ provider.name|escapejs }}",
+    "specialization": "{{ provider.service_type|capfirst|escapejs }}",
+    "location": "{{ provider.location|escapejs }}",
+    "price": {{ provider.price_per_hour }},
+    "phone": "{{ provider.phone_number|default:''|escapejs }}",
+    "description": "{{ provider.description|default:''|escapejs }}",
+    "rating": {{ provider.average_rating }}
+}
+{% else %}
+null
+{% endif %}
+</script>
+
+<div class="booking-container" id="bookingMain">
+    <div class="booking-header">
+        <h2>Book Your Service</h2>
+        <p>Confirm the details for your appointment</p>
+    </div>
+
+    <div class="provider-summary">
+        <img src="" id="providerImg" alt="Provider">
+        <div>
+            <h4 id="providerName">Loading...</h4>
+            <p id="providerService"></p>
+            <p id="providerDetails"></p>
+        </div>
+    </div>
+
+    <div class="booking-form">
+        <div class="form-group full-width">
+            <label>Service Location</label>
+            <input type="text" id="location" placeholder="Enter full address">
+        </div>
+        <div class="form-group">
+            <label>Preferred Date</label>
+            <input type="date" id="date">
+        </div>
+        <div class="form-group">
+            <label>Preferred Time</label>
+            <select id="time">
+                <option value="">Select slot</option>
+                <option>09:00 AM - 11:00 AM</option>
+                <option>11:00 AM - 01:00 PM</option>
+                <option>02:00 PM - 04:00 PM</option>
+                <option>04:00 PM - 06:00 PM</option>
+            </select>
+        </div>
+        <div class="form-group full-width">
+            <label>Additional Notes</label>
+            <textarea id="notes" placeholder="Optional notes..."></textarea>
+        </div>
+    </div>
+
+    <button class="btn-confirm" id="confirmBtn">Confirm Booking</button>
+</div>
+
+<script src="{% static 'core/js/api-service.js' %}"></script>
+<script>
+let currentProvider = null;
+
+document.addEventListener('DOMContentLoaded', async function() {
+    // Read provider data injected by Django as JSON
+    var raw = document.getElementById('provider-data').textContent.trim();
+    var serverProvider = null;
+    try { serverProvider = JSON.parse(raw); } catch(e) { serverProvider = null; }
+
+    if (serverProvider) {
+        currentProvider = serverProvider;
+        populateProviderUI();
+        return;
+    }
+
+    // Fallback: read ?id= from URL and fetch from API
+    var params = new URLSearchParams(window.location.search);
+    var providerId = params.get('id');
+    if (!providerId) {
+        alert('No provider selected');
+        window.location.href = '/';
+        return;
+    }
+    try {
+        var res = await fetch('/api/providers/' + providerId + '/', {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        var data = await res.json();
+        if (data.success && data.data) {
+            currentProvider = data.data;
+            populateProviderUI();
+        } else {
+            alert('Provider not found');
+            window.location.href = '/';
+        }
+    } catch (err) {
+        console.error(err);
+        alert('Error loading provider details');
+    }
+});
+
+function populateProviderUI() {
+    var p = currentProvider;
+    document.getElementById('providerName').textContent = p.fullName;
+    document.getElementById('providerService').textContent = p.specialization || 'Service';
+    document.getElementById('providerDetails').textContent = '\u2B50 ' + (p.rating > 0 ? p.rating : '4.5') + ' \u2022 ' + (p.location || 'Professional') + ' \u2022 \u20B9' + p.price + '/hr';
+    document.getElementById('providerImg').src = 'https://picsum.photos/seed/prov' + p.id + '/200/200';
+}
+
+document.getElementById('confirmBtn').onclick = async function() {
+    var loc = document.getElementById('location').value;
+    var date = document.getElementById('date').value;
+    var time = document.getElementById('time').value;
+    var notes = document.getElementById('notes').value;
+
+    if (!loc || !date || !time) {
+        alert('Please fill in all required fields');
+        return;
+    }
+
+    var btn = document.getElementById('confirmBtn');
+    btn.disabled = true;
+    btn.textContent = 'Processing...';
+
+    var bookingData = {
+        providerId: currentProvider.id,
+        bookingDate: date,
+        bookingTime: time,
+        location: loc,
+        additionalNotes: notes
+    };
+
+    try {
+        var res = await window.apiService.createBooking(bookingData);
+        if (res.success) {
+            showSuccess(res.data);
+        } else {
+            alert(res.message || 'Booking failed');
+            btn.disabled = false;
+            btn.textContent = 'Confirm Booking';
+        }
+    } catch (err) {
+        console.error(err);
+        alert('An error occurred');
+        btn.disabled = false;
+        btn.textContent = 'Confirm Booking';
+    }
+};
+
+function showSuccess(booking) {
+    document.getElementById('bookingMain').innerHTML =
+        '<div class="success-card">' +
+        '<i class="fas fa-check-circle" style="font-size:60px;color:#28a745;margin-bottom:20px;"></i>' +
+        '<h2>Booking Confirmed!</h2>' +
+        '<p>Your booking ID is #' + booking.bookingId + '</p>' +
+        '<button onclick="window.location.href=\'/payment.html?bookingId=' + booking.bookingId + '\'" class="btn-confirm" style="margin-top:20px;">Proceed to Payment</button>' +
+        '</div>';
+}
+</script>
+{% include "core/chatbot_include.html" %}
+</body>
+</html>

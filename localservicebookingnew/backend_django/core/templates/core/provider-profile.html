@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Profile - Local Man Power Service Provider</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Session Manager -->
+    <script src="{% static 'core/js/session-manager.js' %}"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; min-height: 100vh; color: #333; }
+        
+        header { display: flex; justify-content: space-between; padding: 15px 50px; background: #2c3e50; color: white; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 1.5rem; font-weight: 700; color: white; text-decoration: none; }
+        .logo span { color: #ffffff; }
+        nav { display: flex; align-items: center; gap: 20px; }
+        nav a { color: white; text-decoration: none; font-weight: 500; }
+        .btn { background: #2c3e50; border: none; padding: 8px 15px; cursor: pointer; border-radius: 5px; color: white; font-weight: 500; text-decoration: none; }
+
+        .profile-container { max-width: 1200px; margin: 40px auto; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+        .profile-header { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); color: white; padding: 40px; display: flex; align-items: center; gap: 30px; }
+        .profile-image { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 5px solid rgba(255,255,255,0.2); }
+        .profile-info h1 { margin: 0 0 10px 0; font-size: 32px; }
+        .profile-info p { margin: 5px 0; opacity: 0.9; font-size: 18px; }
+        .rating { display: flex; align-items: center; gap: 10px; margin-top: 15px; }
+        .rating .stars { color: #ffc107; font-size: 20px; }
+
+        .profile-content { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; padding: 40px; }
+        .section { margin-bottom: 30px; }
+        .section h2 { color: #2c3e50; margin-bottom: 20px; font-size: 24px; border-bottom: 2px solid #e9ecef; padding-bottom: 10px; }
+        .info-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        .info-item { display: flex; align-items: center; gap: 15px; }
+        .info-item i { color: #2c3e50; font-size: 20px; width: 30px; text-align: center; }
+        
+        .skills-list { display: flex; flex-wrap: wrap; gap: 10px; }
+        .skill-tag { background: #e9ecef; color: #2c3e50; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 500; }
+        .bio-text { line-height: 1.6; color: #555; }
+
+        .action-buttons { padding: 0 40px 40px; display: flex; gap: 15px; }
+        .btn-action { flex: 1; height: 50px; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; }
+        .btn-book { background: #28a745; color: white; }
+        .btn-call { background: #f39c12; color: white; }
+        .btn-back { background: #6c757d; color: white; }
+        
+        .reviews-container { margin-top: 20px; }
+        .review-card { background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 15px; }
+        .review-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .reviewer-name { font-weight: 600; }
+        
+        @media (max-width: 768px) { .profile-header { flex-direction: column; text-align: center; } .profile-content { grid-template-columns: 1fr; } .action-buttons { flex-direction: column; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="{% url 'home' %}" class="logo">Local Man Power<span> Service Provider</span></a>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'home' %}#services">Services</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'login' %}" class="btn">Book Now</a>
+    </nav>
+</header>
+
+<div class="profile-container" id="profileContainer">
+    <div class="profile-header">
+        <img src="https://picsum.photos/seed/provider/300/300.jpg" alt="Provider" class="profile-image" id="profileImage">
+        <div class="profile-info">
+            <h1 id="providerName">Loading Profile...</h1>
+            <p id="providerTitle"></p>
+            <div class="rating">
+                <div class="stars" id="starsContainer"></div>
+                <span id="ratingText"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-content">
+        <div class="main-column">
+            <div class="section">
+                <h2>About</h2>
+                <p class="bio-text" id="providerBio"></p>
+            </div>
+            <div class="section">
+                <h2>Skills & Services</h2>
+                <div class="skills-list" id="skillsList"></div>
+            </div>
+            <div class="section">
+                <h2>Customer Reviews</h2>
+                <div id="reviewsSection" class="reviews-container"></div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="section">
+                <h2>Contact Info</h2>
+                <div class="info-grid">
+                    <div class="info-item"><i class="fas fa-map-marker-alt"></i><span id="providerLocation"></span></div>
+                    <div class="info-item"><i class="fas fa-phone"></i><span id="providerPhone"></span></div>
+                    <div class="info-item"><i class="fas fa-envelope"></i><span id="providerEmail"></span></div>
+                    <div class="info-item"><i class="fas fa-clock"></i><span id="providerResponse"></span></div>
+                </div>
+            </div>
+            <div class="section">
+                <h2>Experience</h2>
+                <div class="info-item"><i class="fas fa-briefcase"></i><span id="providerExp"></span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <button class="btn-action btn-book" id="bookBtn"><i class="fas fa-calendar-check"></i> Book Now</button>
+        <button class="btn-action btn-call" id="callBtn"><i class="fas fa-phone"></i> Call Now</button>
+        <a href="javascript:history.back()" class="btn-action btn-back"><i class="fas fa-arrow-left"></i> Back</a>
+    </div>
+</div>
+
+<script src="{% static 'core/js/api-service.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    const params = new URLSearchParams(window.location.search);
+    // Support both ?id= (legacy) and path-based /provider/<id>/
+    const providerId = params.get('id') || window.location.pathname.split('/provider/')[1]?.replace('/', '');
+
+    if (!providerId) {
+        alert('No provider selected');
+        window.history.back();
+        return;
+    }
+
+    try {
+        const res = await window.apiService.getProvider(providerId);
+        if (res.success && res.data) {
+            renderProfile(res.data);
+            renderReviews(res.data.feedback || []);
+        } else {
+            alert('Provider not found');
+            window.history.back();
+        }
+    } catch (err) {
+        console.error('Error:', err);
+        alert('Error loading profile');
+    }
+});
+
+function renderProfile(p) {
+    document.getElementById('providerName').textContent = p.fullName;
+    document.getElementById('providerTitle').textContent = p.specialization || 'Master Professional';
+    document.getElementById('providerBio').textContent = p.description || 'Dedicated professional with extensive experience.';
+    document.getElementById('profileImage').src = `https://picsum.photos/seed/prov${p.id}/300/300`;
+
+    document.getElementById('providerLocation').textContent = p.location || 'Local Area';
+    document.getElementById('providerPhone').textContent = p.phone || 'N/A';
+    document.getElementById('providerEmail').textContent = p.userId ? `${p.userId}@service.com` : 'N/A';
+    document.getElementById('providerResponse').textContent = `Response: ${p.responseTime || 30} mins`;
+    document.getElementById('providerExp').textContent = `${p.experience || 5}+ Years Experience`;
+
+    const skills = p.specialization ? [p.specialization, 'Repair', 'Maintenance', 'Installation'] : ['General Service'];
+    document.getElementById('skillsList').innerHTML = skills.map(s => `<span class="skill-tag">${s}</span>`).join('');
+
+    const rating = p.rating > 0 ? p.rating : 4.5;
+    document.getElementById('starsContainer').innerHTML = generateStars(rating);
+    document.getElementById('ratingText').textContent = `${rating} Rating`;
+
+    document.getElementById('bookBtn').onclick = () => {
+        window.location.href = `/book/${p.id}/`;
+    };
+    document.getElementById('callBtn').onclick = () => {
+        window.location.href = `tel:+91${(p.phone || '9360522919').replace(/[^0-9]/g, '')}`;
+    };
+}
+
+function renderReviews(reviews) {
+    const container = document.getElementById('reviewsSection');
+    if (!reviews.length) {
+        container.innerHTML = '<p style="color:grey;">No reviews yet. Be the first to review!</p>';
+        return;
+    }
+    container.innerHTML = reviews.map(r => `
+        <div class="review-card">
+            <div class="review-header">
+                <span class="reviewer-name">${r.user}</span>
+                <span class="stars">${generateStars(r.rating)}</span>
+            </div>
+            <p>${r.comment || ''}</p>
+        </div>
+    `).join('');
+}
+
+function generateStars(rating) {
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+        if (i <= Math.floor(rating)) stars += '<i class="fas fa-star" style="color:#ffc107"></i>';
+        else if (i === Math.ceil(rating) && rating % 1 >= 0.5) stars += '<i class="fas fa-star-half-alt" style="color:#ffc107"></i>';
+        else stars += '<i class="far fa-star" style="color:#ffc107"></i>';
+    }
+    return stars;
+}
+</script>
+{% include "core/chatbot_include.html" %}
+</body>
+</html>

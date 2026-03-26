@@ -1,0 +1,434 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Booking Confirmation & Feedback</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Session Manager -->
+<script src="{% static 'core/js/session-manager.js' %}"></script>
+
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body{
+    margin:0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 20px 40px;
+}
+
+/* ===== NAVBAR ===== */
+header{
+    display:flex;
+    justify-content:space-between;
+    padding:15px 50px;
+    background: #2c3e50;
+    color:white;
+    align-items:center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.logo span{
+    color: #ffffff;
+}
+
+nav a{
+    color:white;
+    margin:0 10px;
+    text-decoration:none;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* ===== FEEDBACK CONTAINER ===== */
+.feedback-container {
+    background: white;
+    max-width: 600px;
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin-top: 80px;
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== SUCCESS HEADER ===== */
+.success-header {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    padding: 40px;
+    text-align: center;
+}
+
+.success-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    animation: checkmark 0.6s ease-out;
+}
+
+@keyframes checkmark {
+    0% {
+        transform: scale(0) rotate(45deg);
+    }
+    50% {
+        transform: scale(1.2) rotate(45deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.success-header h1 {
+    margin: 0 0 10px 0;
+    font-size: 32px;
+}
+
+.success-header p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 18px;
+}
+
+/* ===== BOOKING DETAILS ===== */
+.booking-details {
+    padding: 30px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.booking-details h3 {
+    color: #2c3e50;
+    margin: 0 0 20px 0;
+    font-size: 20px;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.detail-value {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+/* ===== FEEDBACK FORM ===== */
+.feedback-form {
+    padding: 30px;
+}
+
+.feedback-form h3 {
+    color: #2c3e50;
+    margin: 0 0 20px 0;
+    font-size: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 100px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group textarea:focus {
+    outline: none;
+    border-color: #28a745;
+}
+
+.rating-section {
+    margin-bottom: 20px;
+}
+
+.rating-section label {
+    display: block;
+    margin-bottom: 10px;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.star-rating {
+    display: flex;
+    gap: 10px;
+    font-size: 32px;
+}
+
+.star {
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.star:hover,
+.star.active {
+    color: #ffc107;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-btn:hover {
+    background: #218838;
+    transform: translateY(-2px);
+}
+
+.submit-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.action-buttons {
+    padding: 0 30px 30px;
+    display: flex;
+    gap: 15px;
+}
+
+.btn-secondary {
+    flex: 1;
+    padding: 12px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+.btn-primary {
+    flex: 1;
+    padding: 12px;
+    background: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #1a252f;
+}
+
+.success-message {
+    background: #d4edda;
+    color: #155724;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: none;
+    text-align: center;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width: 768px){
+    header {
+        padding: 10px 20px;
+    }
+    
+    .feedback-container {
+        margin: 70px 10px 10px;
+    }
+    
+    .success-header {
+        padding: 30px 20px;
+    }
+    
+    .success-header h1 {
+        font-size: 24px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<header>
+    <div class="logo">Local Man Power<span> Service Provider</span></div>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'home' %}#services">Services</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'home' %}#contact">Contact</a>
+        <button onclick="history.back()" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.4); color:white; padding:7px 16px; border-radius:20px; cursor:pointer; font-size:14px; margin-left:10px;">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+    </nav>
+</header>
+
+<!-- ===== FEEDBACK CONTAINER ===== -->
+<div class="feedback-container">
+
+    <!-- ===== SUCCESS HEADER ===== -->
+    <div class="success-header">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h1>Booking Confirmed!</h1>
+        <p>Your service has been successfully booked</p>
+    </div>
+
+    <!-- ===== BOOKING DETAILS ===== -->
+    <div class="booking-details">
+        <h3>Booking Details</h3>
+        <div class="detail-item">
+            <span class="detail-label">Booking ID</span>
+            <span class="detail-value" id="bookingId">#BK2024030001</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Service Provider</span>
+            <span class="detail-value" id="providerName">Service Provider</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Service Date</span>
+            <span class="detail-value" id="serviceDate">Loading...</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Service Time</span>
+            <span class="detail-value" id="serviceTime">Loading...</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Location</span>
+            <span class="detail-value" id="serviceLocation">Loading...</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Status</span>
+            <span class="detail-value" style="color: #28a745;">Confirmed</span>
+        </div>
+    </div>
+
+
+
+    <!-- ===== ACTION BUTTONS ===== -->
+    <div class="action-buttons">
+        <button class="btn-secondary" onclick="viewBookings()">
+            <i class="fas fa-list"></i> My Bookings
+        </button>
+        <button class="btn-primary" onclick="goHome()">
+            <i class="fas fa-home"></i> Back to Home
+        </button>
+    </div>
+
+</div>
+
+<script src="{% static 'core/js/session-manager.js' %}"></script>
+<script src="{% static 'core/js/api-service.js' %}"></script>
+<script>
+let currentBookingId = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    currentBookingId = params.get('bookingId');
+
+    if (currentBookingId) {
+        document.getElementById('bookingId').textContent = '#' + currentBookingId;
+        // Try to load booking details from backend
+        loadBookingFromBackend(currentBookingId);
+    }
+});
+
+async function loadBookingFromBackend(bookingId) {
+    try {
+        // Use the payment QR endpoint to get provider/booking info
+        const res = await window.apiService.getPaymentQR(bookingId);
+        if (res.success) {
+            document.getElementById('providerName').textContent = res.provider_name || 'Service Provider';
+            document.getElementById('serviceDate').textContent = res.date || '-';
+            document.getElementById('serviceTime').textContent = res.time || '-';
+            document.getElementById('serviceLocation').textContent = res.address || '-';
+        }
+    } catch(e) {
+        console.error('Could not load booking details:', e);
+    }
+}
+
+function viewBookings() { window.location.href = '/my-bookings.html'; }
+function goHome() { window.location.href = '/'; }
+</script>
+
+{% include "core/chatbot_include.html" %}
+</body>
+</html>

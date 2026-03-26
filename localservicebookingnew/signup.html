@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Local Service Provider</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="home2.html">
+                <strong>Local</strong> Service Provider
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home2.html"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="providers_list.html"><i class="fas fa-users"></i> Providers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="fas fa-user-plus"></i> Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Registration Header -->
+    <div class="registration-header">
+        <div class="container">
+            <h1>Create Your Account</h1>
+            <p class="lead">Join our community and book trusted local services</p>
+        </div>
+    </div>
+
+    <!-- Registration Content -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Validation Summary -->
+                <div id="validationSummary" class="alert alert-info" style="display: none;">
+                    <h6><i class="fas fa-info-circle"></i> Please complete the following:</h6>
+                    <ul id="validationErrors"></ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h4><i class="fas fa-user-plus"></i> User Registration</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="userRegistrationForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Full Name *</label>
+                                        <input type="text" class="form-control" id="userFullName" required placeholder="John Doe">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Email Address *</label>
+                                        <input type="email" class="form-control" id="userEmail" required placeholder="john.doe@email.com">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Phone Number *</label>
+                                        <input type="tel" class="form-control" id="userPhone" required placeholder="+1 234-567-8900">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Date of Birth *</label>
+                                        <input type="date" class="form-control" id="userDOB" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Address *</label>
+                                <input type="text" class="form-control" id="userAddress" required placeholder="123 Main St, City, State 12345">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Username *</label>
+                                <input type="text" class="form-control" id="userUsername" required placeholder="johndoe123">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Password *</label>
+                                        <input type="password" class="form-control" id="userPassword" required placeholder="•••••••••••">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Confirm Password *</label>
+                                        <input type="password" class="form-control" id="confirmUserPassword" required placeholder="•••••••••••">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Account Type</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="isProvider" onchange="toggleProviderFields()">
+                                    <label class="form-check-label" for="isProvider">
+                                        Register as a Service Provider
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Provider-specific fields (hidden by default) -->
+                            <div id="providerFields" style="display: none;">
+                                <hr>
+                                <h5 class="mb-3">Provider Information</h5>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Company Name *</label>
+                                            <input type="text" class="form-control" id="companyName" placeholder="Your Company Name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Service Category *</label>
+                                            <select class="form-control" id="serviceCategory">
+                                                <option value="">Select Category</option>
+                                                <option value="electrician">Electrician</option>
+                                                <option value="plumber">Plumber</option>
+                                                <option value="mechanic">Mechanic</option>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Years of Experience *</label>
+                                            <input type="number" class="form-control" id="experience" placeholder="e.g., 5" min="0">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Hourly Rate ($)</label>
+                                            <input type="number" class="form-control" id="hourlyRate" placeholder="e.g., 50" min="0" step="0.01">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Profile Image</label>
+                                    <input type="file" class="form-control" id="profileImage" accept="image/*">
+                                    <small class="text-muted">Upload a profile picture (optional)</small>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Business Description</label>
+                                    <textarea class="form-control" id="businessDescription" rows="3" placeholder="Describe your services, specialties, and what makes you stand out..."></textarea>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Business Address</label>
+                                            <input type="text" class="form-control" id="businessAddress" placeholder="Business address (if different from personal)">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Business Phone</label>
+                                            <input type="tel" class="form-control" id="businessPhone" placeholder="Business phone number">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                                    <label class="form-check-label" for="agreeTerms">
+                                        I agree to the <a href="#" onclick="showTerms()">Terms and Conditions</a> and <a href="#" onclick="showPrivacy()">Privacy Policy</a>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="button" class="btn btn-secondary" onclick="resetUserForm()">Reset</button>
+                                <button type="submit" class="btn btn-primary" id="registerBtn">
+                                    <i class="fas fa-user-plus"></i> Create Account
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Already have account -->
+                <div class="text-center mt-3">
+                    <p>Already have an account? <a href="login.html">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registration Successful!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="fas fa-check-circle text-success" style="font-size: 3rem;"></i>
+                        <h4 class="mt-3">Welcome to Local Service Provider!</h4>
+                        <p>Your account has been created successfully.</p>
+                        <div class="alert alert-info">
+                            <strong>Your Registration Details:</strong><br>
+                            Full Name: <span id="successFullName"></span><br>
+                            Username: <span id="successUsername"></span><br>
+                            User ID: <span id="successUserId"></span><br>
+                            User Type: <span id="successUserType"></span><br>
+                            Password: <span id="successPassword"></span><br>
+                            <small class="text-muted">Please save these details for login.</small>
+                        </div>
+                        <p class="text-muted">You will be redirected to the login page to continue.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="window.location.href='login.html'">Go to HomePage</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- API Service -->
+    <script src="backend/api-service.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        let userCounter = 1000;
+
+        // Form validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('userRegistrationForm');
+            const inputs = form.querySelectorAll('input, select, textarea');
+            
+            inputs.forEach(input => {
+                input.addEventListener('input', checkFormValidity);
+                input.addEventListener('change', checkFormValidity);
+                
+                // Add blur validation for required fields
+                input.addEventListener('blur', function() {
+                    const fieldId = input.id;
+                    const isRequired = input.hasAttribute('required');
+                    
+                    if (isRequired && input.value.trim() === '') {
+                        // Show error for empty required field
+                        let errorElement = document.getElementById(fieldId + 'Error');
+                        if (!errorElement) {
+                            errorElement = document.createElement('div');
+                            errorElement.id = fieldId + 'Error';
+                            errorElement.className = 'field-error';
+                            input.parentNode.appendChild(errorElement);
+                        }
+                        
+                        input.classList.add('is-invalid');
+                        input.classList.remove('is-valid');
+                        
+                        // Set appropriate error message
+                        const errorMessages = {
+                            'userFullName': 'Full name is required',
+                            'userEmail': 'Valid email address is required',
+                            'userPhone': 'Phone number is required',
+                            'userDOB': 'Date of birth is required',
+                            'userAddress': 'Address is required',
+                            'userUsername': 'Username is required',
+                            'userPassword': 'Password is required',
+                            'confirmUserPassword': 'Password confirmation is required'
+                        };
+                        
+                        errorElement.textContent = errorMessages[fieldId] || 'This field is required';
+                        errorElement.style.display = 'block';
+                    }
+                });
+            });
+        });
+
+        function checkFormValidity() {
+            const form = document.getElementById('userRegistrationForm');
+            const submitBtn = document.getElementById('registerBtn');
+            const password = document.getElementById('userPassword').value;
+            const confirmPassword = document.getElementById('confirmUserPassword').value;
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            
+            // Validate individual fields and collect errors
+            const errors = [];
+            
+            if (!validateField('userFullName', 'Full name is required')) {
+                errors.push('Full name is required');
+            }
+            if (!validateField('userEmail', 'Valid email address is required', 'email')) {
+                errors.push('Valid email address is required');
+            }
+            if (!validateField('userPhone', 'Phone number is required')) {
+                errors.push('Phone number is required');
+            }
+            if (!validateField('userDOB', 'Date of birth is required')) {
+                errors.push('Date of birth is required');
+            }
+            if (!validateField('userAddress', 'Address is required')) {
+                errors.push('Address is required');
+            }
+            if (!validateField('userUsername', 'Username is required')) {
+                errors.push('Username is required');
+            }
+            if (!validateField('userPassword', 'Password must be at least 6 characters', 'password')) {
+                errors.push('Password must be at least 6 characters');
+            }
+            if (!validateField('confirmUserPassword', 'Passwords must match', 'confirm')) {
+                errors.push('Passwords must match');
+            }
+            
+            // Validate provider fields if provider checkbox is checked
+            const isProvider = document.getElementById('userTypeProvider').checked;
+            if (isProvider) {
+                if (!validateField('companyName', 'Company name is required')) errors.push('Company name is required');
+                if (!validateField('serviceCategory', 'Service category is required')) errors.push('Service category is required');
+                if (!validateField('experience', 'Years of experience is required')) errors.push('Years of experience is required');
+                if (!validateField('businessAddress', 'City / Location is required')) errors.push('City / Location is required');
+                if (!validateField('upiId', 'UPI ID is required')) errors.push('UPI ID is required');
+                if (!validateField('hourlyRate', 'Hourly rate is required')) errors.push('Hourly rate is required');
+            }
+            
+            if (!agreeTerms) {
+                errors.push('You must agree to the terms and conditions');
+            }
+            
+            // Update validation summary
+            updateValidationSummary(errors);
+            
+            const isValid = form.checkValidity() && password === confirmPassword && password.length >= 6 && agreeTerms;
+            
+            if (isValid) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('btn-secondary');
+                submitBtn.classList.add('btn-primary');
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.remove('btn-primary');
+                submitBtn.classList.add('btn-secondary');
+            }
+        }
+
+        function updateValidationSummary(errors) {
+            const summaryDiv = document.getElementById('validationSummary');
+            const errorsList = document.getElementById('validationErrors');
+            
+            if (errors.length > 0) {
+                errorsList.innerHTML = '';
+                errors.forEach(error => {
+                    const li = document.createElement('li');
+                    li.textContent = error;
+                    errorsList.appendChild(li);
+                });
+                summaryDiv.style.display = 'block';
+                summaryDiv.className = 'alert alert-warning';
+            } else {
+                summaryDiv.style.display = 'none';
+            }
+        }
+
+        function validateField(fieldId, errorMessage, type = 'text') {
+            const field = document.getElementById(fieldId);
+            const value = field.value.trim();
+            let isValid = true;
+            let errorElement = document.getElementById(fieldId + 'Error');
+            
+            // Create error element if it doesn't exist
+            if (!errorElement) {
+                errorElement = document.createElement('div');
+                errorElement.id = fieldId + 'Error';
+                errorElement.className = 'field-error';
+                field.parentNode.appendChild(errorElement);
+            }
+            
+            // Remove previous error styling
+            field.classList.remove('is-invalid', 'is-valid');
+            
+            // Validate based on type
+            switch(type) {
+                case 'email':
+                    isValid = value && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+                    break;
+                case 'password':
+                    isValid = value && value.length >= 6;
+                    break;
+                case 'confirm':
+                    const password = document.getElementById('userPassword').value;
+                    isValid = value && value === password;
+                    break;
+                default:
+                    isValid = value && value.length > 0;
+            }
+            
+            if (!isValid && value !== '') {
+                // Show error
+                field.classList.add('is-invalid');
+                field.classList.remove('is-valid');
+                errorElement.textContent = errorMessage;
+                errorElement.style.display = 'block';
+            } else if (isValid) {
+                // Show success
+                field.classList.add('is-valid');
+                field.classList.remove('is-invalid');
+                errorElement.style.display = 'none';
+            } else {
+                // Hide error if empty (except for required fields on blur)
+                field.classList.remove('is-invalid', 'is-valid');
+                errorElement.style.display = 'none';
+            }
+            
+            return isValid;
+        }
+
+        function resetUserForm() {
+            document.getElementById('userRegistrationForm').reset();
+            
+            // Clear all validation states
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.classList.remove('is-valid', 'is-invalid');
+            });
+            
+            // Clear error messages
+            const errorElements = document.querySelectorAll('.field-error');
+            errorElements.forEach(element => {
+                element.style.display = 'none';
+            });
+            
+            // Hide validation summary
+            document.getElementById('validationSummary').style.display = 'none';
+        }
+
+        function showTerms() {
+            alert('Terms and Conditions:\n\n1. Users must provide accurate information\n2. Services must be booked in good faith\n3. Payment must be made as agreed\n4. Respect all service providers\n5. Report any issues immediately\n\nBy using this service, you agree to these terms.');
+        }
+
+        function showPrivacy() {
+            alert('Privacy Policy:\n\n1. We protect your personal information\n2. Data is only used for service delivery\n3. We do not share your information without consent\n4. You can request data deletion at any time\n5. We use secure storage for all data\n\nYour privacy is important to us.');
+        }
+
+        function toggleProviderFields() {
+            const isProvider = document.getElementById('isProvider').checked;
+            const providerFields = document.getElementById('providerFields');
+            
+            if (isProvider) {
+                providerFields.style.display = 'block';
+                // Make provider fields required
+                ['companyName', 'serviceCategory', 'experience', 'businessAddress', 'upiId', 'hourlyRate'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.setAttribute('required', 'required');
+                });
+            } else {
+                providerFields.style.display = 'none';
+                // Remove required attributes and validation states
+                ['companyName', 'serviceCategory', 'experience', 'businessAddress', 'upiId', 'hourlyRate'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.removeAttribute('required');
+                        el.classList.remove('is-invalid', 'is-valid');
+                    }
+                    const err = document.getElementById(id + 'Error');
+                    if (err) err.style.display = 'none';
+                });
+            }
+            
+            // Re-validate form
+            checkFormValidity();
+        }
+
+        // Form submission
+        document.getElementById('userRegistrationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const isProvider = document.getElementById('isProvider').checked;
+            const formData = {
+                userId: `USER${++userCounter}`,
+                fullName: document.getElementById('userFullName').value,
+                email: document.getElementById('userEmail').value,
+                phone: document.getElementById('userPhone').value,
+                dob: document.getElementById('userDOB').value,
+                address: document.getElementById('userAddress').value,
+                username: document.getElementById('userUsername').value,
+                password: document.getElementById('userPassword').value,
+                userType: isProvider ? 'provider' : 'customer'
+            };
+
+            // Add provider-specific fields if applicable
+            if (isProvider) {
+                formData.companyName = document.getElementById('companyName').value;
+                formData.serviceCategory = document.getElementById('serviceCategory').value;
+                formData.experience = document.getElementById('experience').value;
+                formData.hourlyRate = document.getElementById('hourlyRate').value;
+                formData.businessDescription = document.getElementById('businessDescription').value;
+                formData.businessAddress = document.getElementById('businessAddress').value;
+                formData.businessPhone = document.getElementById('businessPhone').value;
+                formData.licenseNumber = document.getElementById('licenseNumber').value;
+                
+                // Handle profile image
+                const profileImage = document.getElementById('profileImage').files[0];
+                if (profileImage) {
+                    formData.profileImageName = profileImage.name;
+                    // In a real implementation, you'd upload the file to a server
+                    // For now, we'll store the filename
+                }
+            }
+
+            // Validate form data
+            const errors = [];
+            if (!formData.fullName || formData.fullName.trim() === '') errors.push('Full name is required');
+            if (!formData.email || formData.email.trim() === '') errors.push('Email is required');
+            if (!formData.phone || formData.phone.trim() === '') errors.push('Phone number is required');
+            if (!formData.dob || formData.dob.trim() === '') errors.push('Date of birth is required');
+            if (!formData.address || formData.address.trim() === '') errors.push('Address is required');
+            if (!formData.username || formData.username.trim() === '') errors.push('Username is required');
+            if (!formData.password || formData.password.length < 6) errors.push('Password must be at least 6 characters');
+            
+            const confirmPassword = document.getElementById('confirmUserPassword').value;
+            if (formData.password !== confirmPassword) errors.push('Passwords must match');
+            
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            if (!agreeTerms) errors.push('You must agree to the terms and conditions');
+
+            if (errors.length > 0) {
+                alert('Please fix the following errors:\n\n' + errors.join('\n'));
+                return;
+            }
+
+            try {
+                // Show loading state
+                const registerBtn = document.getElementById('registerBtn');
+                const originalText = registerBtn.innerHTML;
+                registerBtn.disabled = true;
+                registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+
+                console.log('Submitting registration:', formData);
+
+                // Try backend API first if available
+                if (window.apiService) {
+                    try {
+                        console.log('Trying backend API...');
+                        const response = await apiService.register(formData);
+
+                        if (response.success) {
+                            console.log('Backend registration successful:', response);
+                            // Show success modal
+                            const fullNameEl = document.getElementById('successFullName');
+                            const usernameEl = document.getElementById('successUsername');
+                            const passwordEl = document.getElementById('successPassword');
+                            const userTypeEl = document.getElementById('successUserType');
+                            const userIdEl = document.getElementById('successUserId');
+                            
+                            if (fullNameEl) fullNameEl.textContent = response.user.fullName;
+                            if (usernameEl) usernameEl.textContent = response.user.username;
+                            if (passwordEl) passwordEl.textContent = '•••••••••••';
+                            if (userTypeEl) userTypeEl.textContent = response.user.userType.charAt(0).toUpperCase() + response.user.userType.slice(1);
+                            if (userIdEl) userIdEl.textContent = response.user.userId;
+
+                            const modal = new bootstrap.Modal(document.getElementById('successModal'));
+                            modal.show();
+
+                            // Reset form
+                            this.reset();
+                            resetValidation();
+                            return;
+                        }
+                    } catch (apiError) {
+                        console.log('Backend not available, saving to localStorage:', apiError.message);
+                    }
+                }
+
+                // Fallback to localStorage
+                console.log('Saving to localStorage...');
+                let users = JSON.parse(localStorage.getItem('users') || '[]');
+                
+                // Check if username already exists
+                if (users.find(u => u.username === formData.username)) {
+                    throw new Error('Username already exists. Please choose a different username.');
+                }
+                
+                // Check if email already exists
+                if (users.find(u => u.email === formData.email)) {
+                    throw new Error('Email already exists. Please use a different email address.');
+                }
+                
+                users.push(formData);
+                localStorage.setItem('users', JSON.stringify(users));
+                console.log('User saved to localStorage:', formData);
+
+                // Show success modal
+                const fullNameEl = document.getElementById('successFullName');
+                const usernameEl = document.getElementById('successUsername');
+                const passwordEl = document.getElementById('successPassword');
+                const userTypeEl = document.getElementById('successUserType');
+                const userIdEl = document.getElementById('successUserId');
+                
+                if (fullNameEl) fullNameEl.textContent = formData.fullName;
+                if (usernameEl) usernameEl.textContent = formData.username;
+                if (passwordEl) passwordEl.textContent = formData.password;
+                if (userTypeEl) userTypeEl.textContent = formData.userType.charAt(0).toUpperCase() + formData.userType.slice(1);
+                if (userIdEl) userIdEl.textContent = formData.userId;
+
+                const modal = new bootstrap.Modal(document.getElementById('successModal'));
+                modal.show();
+
+                // Reset form
+                this.reset();
+                resetValidation();
+
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert('Registration failed: ' + error.message);
+            } finally {
+                // Reset button state
+                const registerBtn = document.getElementById('registerBtn');
+                registerBtn.disabled = false;
+                registerBtn.innerHTML = originalText;
+            }
+        });
+
+        function resetValidation() {
+            const form = document.getElementById('userRegistrationForm');
+            const inputs = form.querySelectorAll('input, select, textarea');
+            
+            inputs.forEach(input => {
+                input.classList.remove('is-invalid', 'is-valid');
+                const errorElement = document.getElementById(input.id + 'Error');
+                if (errorElement) {
+                    errorElement.style.display = 'none';
+                }
+            });
+            
+            // Reset validation summary
+            const validationSummary = document.getElementById('validationSummary');
+            if (validationSummary) {
+                validationSummary.style.display = 'none';
+            }
+            
+            // Reset button state
+            const submitBtn = document.getElementById('registerBtn');
+            submitBtn.disabled = true;
+            submitBtn.classList.remove('btn-primary');
+            submitBtn.classList.add('btn-secondary');
+        }
+
+        function saveUserToLocalStorage(user) {
+            // Get existing users or create new array
+            let users = JSON.parse(localStorage.getItem('users') || '[]');
+            users.push(user);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Debug: Show what was saved
+            console.log('Saved user:', user);
+            console.log('All users now:', users);
+            
+            // Also show in alert for immediate feedback
+            alert(`User registered successfully!\n\nName: ${user.fullName}\nID: ${user.userId}\nType: ${user.userType}\nUsername: ${user.username}\n\nTotal users: ${users.length}`);
+        }
+    </script>
+</body>
+</html>

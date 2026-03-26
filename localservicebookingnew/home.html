@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Local Service Provider</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="home.css">
+    
+    <!-- Session Manager -->
+    <script src="session-manager.js"></script>
+    <script>
+        // Redirect providers and admins to their dashboards
+        (function() {
+            var u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (u && u.userType === 'provider') {
+                window.location.replace('provider_dashboard.html');
+            } else if (u && u.userType === 'admin') {
+                window.location.replace('admin_dashboard.html');
+            }
+        })();
+    </script>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<header>
+    <div class="logo">Local Service<span> Provider</span></div>
+    <nav>
+        <a href="home.html">Home</a>
+        <a href="home.html#services">Services</a>
+        <a href="about.html">About</a>
+        <a href="home.html#contact">Contact</a>
+        <a href="login.html" class="btn">Log in</a>
+
+    </nav>
+</header>
+
+<!-- ===== HERO / CAROUSEL ===== -->
+<section class="hero">
+    <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1581090700227-1e37b190418e');">
+        <div class="content">
+            <h1>Professional Electrical Services</h1>
+            <p>Wiring, Repairs & Installations</p>
+            <!-- <button class="btn" >Book Now</button> -->
+        </div>
+    </div>
+
+    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c');">
+        <div class="content">
+            <h1>Trusted Plumbing Experts</h1>
+            <p>Leak Repairs & Pipe Fittings</p>
+            <!-- <button class="btn">Book Now</button> -->
+        </div>
+    </div>
+
+    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2');">
+        <div class="content">
+            <h1>Reliable Mechanical Services</h1>
+            <p>Bike & Car Repairs</p>
+            <!-- <button class="btn">Book Now</button> -->
+        </div>
+    </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="services" id="services">
+    <h2>Our Services</h2>
+    <div class="service-cards">
+        <div class="card">
+            <i class="fa-solid fa-bolt"></i>
+            <h3>Electrician</h3>
+            <p>Expert electrical solutions</p>
+            <a href="electrician_listing.html"><button>View Details</button></a>
+        </div>
+
+        <div class="card">
+            <i class="fa-solid fa-wrench"></i>
+            <h3>Plumber</h3>
+            <p>Leak repairs & installations</p>
+            <a href="plumber_listing.html"><button>View Details</button></a>
+        </div>
+
+        <div class="card">
+            <i class="fa-solid fa-car"></i>
+            <h3>Mechanic</h3>
+            <p>Auto repair & maintenance</p>
+            <a href="mechanic_listing.html"><button>View Details</button></a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== WHY CHOOSE US ===== -->
+<section class="why">
+    <h2>Why Choose Us?</h2>
+    <div class="why-box">
+        <div><i class="fa-solid fa-shield"></i><p>Verified Professionals</p></div>
+        <div><i class="fa-solid fa-wallet"></i><p>Affordable Pricing</p></div>
+        <div><i class="fa-solid fa-clock"></i><p>Fast Service</p></div>
+        <div><i class="fa-solid fa-headset"></i><p>24/7 Support</p></div>
+    </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="how">
+    <h2>How It Works</h2>
+    <div class="steps">
+        <div>1️⃣ Choose Service</div>
+        <div>2️⃣ Book Online</div>
+        <div>3️⃣ Get It Fixed</div>
+    </div>
+</section>
+<!-- ===== FOOTER ===== -->
+<footer id="contact">
+    <p>📞+91 123-456-7890 | 📧 localserviceprovider@gmail.com</p>
+    <p>© 2026 Local Service Provider</p>
+</footer>
+
+<script src="home.js"></script>
+</body>
+</html>

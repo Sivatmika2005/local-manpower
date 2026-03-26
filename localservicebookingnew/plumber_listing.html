@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Plumbing Services - Local Service Provider</title>
+    <!-- Session Manager -->
+    <script src="session-manager.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 50px;
+            background: #2c3e50;
+            color: white;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #ffffff;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #f8f9fa;
+        }
+
+        .btn {
+            background: #2c3e50;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            color: white;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #1a252f;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: white;
+            padding: 2rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: white;
+            margin: 0 2rem 2rem;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .filter-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .filter-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 0.75rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: #2c3e50;
+        }
+
+        /* Providers Section */
+        .providers-section {
+            margin: 0 2rem 3rem;
+        }
+
+        .providers-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .providers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .provider-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .provider-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .provider-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #4CAF50;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .provider-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+
+        .provider-content {
+            padding: 1.5rem;
+        }
+
+        .provider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .provider-info h3 {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 0.25rem;
+        }
+
+        .provider-info p {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .provider-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #fff3cd;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+        }
+
+        .provider-rating i {
+            color: #ffc107;
+        }
+
+        .provider-rating span {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .provider-rating .review-count {
+            font-weight: 400;
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .provider-details {
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+
+        .detail-item i {
+            color: #2c3e50;
+            width: 20px;
+        }
+
+        .provider-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-tag {
+            background: #f8f9fa;
+            color: #2c3e50;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid #e1e8ed;
+        }
+
+        .provider-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            background: #2c3e50;
+            color: white;
+            flex: 1;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #2c3e50;
+            border: 2px solid #2c3e50;
+            flex: 1;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #1a252f;
+        }
+
+        .btn-secondary:hover {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #f1c40f;
+            color: #2c3e50;
+            flex: 1;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .btn-warning:hover {
+            background: #f39c12;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .provider-card {
+            animation: fadeInUp 0.6s ease both;
+        }
+
+        .provider-card:nth-child(1) { animation-delay: 0.1s; }
+        .provider-card:nth-child(2) { animation-delay: 0.2s; }
+        .provider-card:nth-child(3) { animation-delay: 0.3s; }
+        .provider-card:nth-child(4) { animation-delay: 0.4s; }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .providers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-controls {
+                grid-template-columns: 1fr;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav a {
+                margin: 0.5rem;
+            }
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: white;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+    <div class="header-container">
+        <a href="home.html" class="logo">Local Service<span> Provider</span></a>
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="home.html#services">Services</a>
+            <a href="about.html">About</a>
+            <a href="home.html#contact">Contact</a>
+            <a href="login.html" class="btn">Book Now</a>
+        </nav>
+    </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+    <h1>Professional Plumbing Services</h1>
+    <p>Expert plumbers for all your plumbing needs - from repairs to installations</p>
+    <button class="btn" onclick="scrollToProviders()">
+        <i class="fas fa-tools"></i> Find Plumbers
+    </button>
+</section>
+
+<!-- Stats Section -->
+<section class="stats">
+    <div class="stats-container">
+        <div class="stat-item">
+            <div class="stat-number">150+</div>
+            <div class="stat-label">Expert Plumbers</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">4.8</div>
+            <div class="stat-label">Average Rating</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Emergency Service</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">10K+</div>
+            <div class="stat-label">Happy Customers</div>
+        </div>
+    </div>
+</section>
+
+<!-- Filter Section -->
+<section class="filter-section">
+    <div class="filter-container">
+        <div class="filter-header">
+            <h2 class="filter-title">Find Your Perfect Plumber</h2>
+            <span id="resultsCount">Showing 6 plumbers</span>
+        </div>
+        <div class="filter-controls">
+            <div class="filter-group">
+                <label for="searchInput">Search by Name</label>
+                <input type="text" id="searchInput" placeholder="Enter plumber name...">
+            </div>
+            <div class="filter-group">
+                <label for="serviceType">Service Type</label>
+                <select id="serviceType">
+                    <option value="">All Services</option>
+                    <option value="emergency">Emergency Repair</option>
+                    <option value="installation">Installation</option>
+                    <option value="maintenance">Maintenance</option>
+                    <option value="drainage">Drainage</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="experience">Experience</label>
+                <select id="experience">
+                    <option value="">Any Experience</option>
+                    <option value="5">5+ Years</option>
+                    <option value="10">10+ Years</option>
+                    <option value="15">15+ Years</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="rating">Minimum Rating</label>
+                <select id="rating">
+                    <option value="">Any Rating</option>
+                    <option value="4.5">4.5+ Stars</option>
+                    <option value="4.0">4.0+ Stars</option>
+                    <option value="3.5">3.5+ Stars</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Providers Section -->
+<section class="providers-section" id="providersSection">
+    <div class="providers-container">
+        <div class="providers-grid" id="providersGrid">
+<script src="backend/api-service.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadDynamicProviders();
+    initializeFilters();
+});
+
+async function loadDynamicProviders() {
+    const grid = document.getElementById('providersGrid');
+    const resultsCount = document.getElementById('resultsCount');
+    
+    try {
+        grid.innerHTML = '<div class="loading"><div class="spinner"></div><p>Finding expert plumbers...</p></div>';
+        
+        const res = await window.apiService.getProvidersByCategory('Plumber');
+        
+        if (res.success && res.data.length > 0) {
+            renderProviders(res.data);
+            resultsCount.textContent = `Showing ${res.data.length} plumber${res.data.length !== 1 ? 's' : ''}`;
+        } else {
+            grid.innerHTML = '<div style="text-align:center; color:white; padding:40px; grid-column: 1/-1;"><h3>No plumbers found in your area yet.</h3></div>';
+            resultsCount.textContent = 'Showing 0 plumbers';
+        }
+    } catch (error) {
+        console.error('Error loading providers:', error);
+        grid.innerHTML = '<div style="text-align:center; color:white; padding:40px; grid-column: 1/-1;"><h3>Error loading providers. Please try again.</h3></div>';
+    }
+}
+
+function renderProviders(providers) {
+    const grid = document.getElementById('providersGrid');
+    grid.innerHTML = providers.map((p, index) => `
+        <div class="provider-card" style="animation-delay: ${0.1 * (index + 1)}s">
+            <span class="provider-badge">${p.isAvailable ? 'Available Now' : 'Quick Response'}</span>
+            <img src="${p.profileImage || `https://picsum.photos/seed/plumber${p.userId}/400/200.jpg`}" alt="${p.fullName}" class="provider-image">
+            <div class="provider-content">
+                <div class="provider-header">
+                    <div class="provider-info">
+                        <h3>${p.fullName}</h3>
+                        <p>${p.specialization || 'Master Plumber'}</p>
+                    </div>
+                    <div class="provider-rating">
+                        <i class="fas fa-star"></i>
+                        <span>${p.rating || 4.5}</span>
+                    </div>
+                </div>
+                <div class="provider-details">
+                    <div class="detail-item">
+                        <i class="fas fa-briefcase"></i>
+                        <span>${p.experience || 5}+ years experience</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${p.location || 'Local Area'}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Response time: ${p.responseTime || '30'} mins</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Licensed & Insured</span>
+                    </div>
+                </div>
+                <div class="provider-skills">
+                    ${(p.skills || 'Repair, Installation, Maintenance').split(',').map(s => `<span class="skill-tag">${s.trim()}</span>`).join('')}
+                </div>
+                <div class="provider-actions">
+                    <button class="btn btn-primary" onclick="bookProvider('${p.userId}', '${p.fullName}')">
+                        <i class="fas fa-calendar-check"></i> Book Now
+                    </button>
+                    <button class="btn btn-warning" onclick="callProvider('${p.phone || '+91 9876543210'}')">
+                        <i class="fas fa-phone"></i> Call
+                    </button>
+                    <button class="btn btn-secondary" onclick="viewProfile('${p.userId}', '${p.fullName}')">
+                        <i class="fas fa-user"></i> Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function scrollToProviders() {
+    document.getElementById('providersSection').scrollIntoView({ behavior: 'smooth' });
+}
+
+function bookProvider(id, name) {
+    if (!id || id === 'undefined') {
+        alert('Error: Selective provider ID is missing.');
+        return;
+    }
+    // New Django URL pattern
+    window.location.href = `/book/${id}/`;
+}
+
+function viewProfile(id, name) {
+    window.location.href = `provider-profile.html?id=${id}&name=${encodeURIComponent(name)}`;
+}
+
+function callProvider(phone) {
+    window.location.href = 'tel:' + phone.replace(/[^0-9+]/g, '');
+}
+
+function initializeFilters() {
+    const searchInput = document.getElementById('searchInput');
+    const serviceType = document.getElementById('serviceType');
+    const experience = document.getElementById('experience');
+    const rating = document.getElementById('rating');
+    
+    [searchInput, serviceType, experience, rating].forEach(element => {
+        if (element) {
+            element.addEventListener('input', applyFilters);
+            element.addEventListener('change', applyFilters);
+        }
+    });
+}
+
+function applyFilters() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const minExp = document.getElementById('experience').value;
+    const minRating = document.getElementById('rating').value;
+    
+    const cards = document.querySelectorAll('.provider-card');
+    let visibleCount = 0;
+    
+    cards.forEach(card => {
+        const name = card.querySelector('h3').textContent.toLowerCase();
+        const exp = parseInt(card.querySelector('.detail-item:nth-child(1) span').textContent) || 0;
+        const rating = parseFloat(card.querySelector('.provider-rating span').textContent) || 0;
+        
+        let isVisible = true;
+        if (searchTerm && !name.includes(searchTerm)) isVisible = false;
+        if (minExp && exp < parseInt(minExp)) isVisible = false;
+        if (minRating && rating < parseFloat(minRating)) isVisible = false;
+        
+        card.style.display = isVisible ? 'block' : 'none';
+        if (isVisible) visibleCount++;
+    });
+    
+    document.getElementById('resultsCount').textContent = `Showing ${visibleCount} plumber${visibleCount !== 1 ? 's' : ''}`;
+}
+</script>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

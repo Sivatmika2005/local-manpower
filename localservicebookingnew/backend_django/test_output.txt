@@ -1,0 +1,1564 @@
+Found 19 test(s).
+Creating test database for alias 'default'...
+System check identified some issues:
+
+WARNINGS:
+account.EmailAddress: (models.W036) MySQL does not support unique constraints with conditions.
+	HINT: A constraint won't be created. Silence this warning if you don't care about it.
+
+System check identified 1 issue (0 silenced).
+..[REGISTER] User saved: id=3 username=testuser type=customer
+.[REGISTER] User saved: id=4 username=provider1 type=provider
+Provider saved: 1
+[REGISTER] Provider details: name='Test Provider' type='electrician' upi='test@upi' loc='Mumbai' price=500.00
+...........[OTP SMS] To: 9876543210  OTP: 390262
+..E.E
+======================================================================
+ERROR: test_filter_providers_by_category (core.tests.ProviderTests.test_filter_providers_by_category)
+Test filtering providers by service type.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "C:\Users\ARJUN\OneDrive\Desktop\booking\localservicebookingnew\backend_django\core\views.py", line 425, in api_providers
+    if category:
+       ^^^^^^^^
+NameError: name 'category' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\allauth\account\middleware.py", line 34, in middleware
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\corsheaders\middleware.py", line 53, in __call__
+    result = self.get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\OneDrive\Desktop\booking\localservicebookingnew\backend_django\core\tests.py", line 116, in test_filter_providers_by_category
+    response = self.client.get('/api/providers/?category=electrician')
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\test.py", line 276, in get
+    response = super().get(path, data=data, **extra)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\test.py", line 193, in get
+    return self.generic('GET', path, **r)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\test.py", line 221, in generic
+    return super().generic(
+           ~~~~~~~~~~~~~~~^
+        method, path, data, content_type, secure, **extra)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 609, in generic
+    return self.request(**r)
+           ~~~~~~~~~~~~^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\test.py", line 273, in request
+    return super().request(**kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\test.py", line 225, in request
+    request = super().request(**kwargs)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 886, in request
+    response = self.handler(environ)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 176, in __call__
+    response = self.get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\test.py", line 245, in get_response
+    return super().get_response(request)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 140, in get_response
+    response = self._middleware_chain(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+======================================================================
+ERROR: test_list_providers (core.tests.ProviderTests.test_list_providers)
+Test listing all providers.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "C:\Users\ARJUN\OneDrive\Desktop\booking\localservicebookingnew\backend_django\core\views.py", line 425, in api_providers
+    if category:
+       ^^^^^^^^
+NameError: name 'category' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\allauth\account\middleware.py", line 34, in middleware
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\corsheaders\middleware.py", line 53, in __call__
+    result = self.get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ARJUN\OneDrive\Desktop\booking\localservicebookingnew\backend_django\core\tests.py", line 109, in test_list_providers
+    response = self.client.get('/api/providers/')
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\test.py", line 276, in get
+    response = super().get(path, data=data, **extra)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\test.py", line 193, in get
+    return self.generic('GET', path, **r)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\test.py", line 221, in generic
+    return super().generic(
+           ~~~~~~~~~~~~~~~^
+        method, path, data, content_type, secure, **extra)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 609, in generic
+    return self.request(**r)
+           ~~~~~~~~~~~~^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\test.py", line 273, in request
+    return super().request(**kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\test.py", line 225, in request
+    request = super().request(**kwargs)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 886, in request
+    response = self.handler(environ)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 176, in __call__
+    response = self.get_response(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\rest_framework\test.py", line 245, in get_response
+    return super().get_response(request)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 140, in get_response
+    response = self._middleware_chain(request)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 57, in inner
+    response = response_for_exception(request, exc)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 144, in response_for_exception
+    log_response(
+    ~~~~~~~~~~~~^
+        "%s: %s",
+        ^^^^^^^^^
+    ...<4 lines>...
+        exception=exc,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 246, in log_response
+    getattr(logger, level)(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        message,
+        ^^^^^^^^
+    ...<5 lines>...
+        exc_info=exception,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1549, in error
+    self._log(ERROR, msg, args, **kwargs)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+    ~~~~~~~~~^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\log.py", line 125, in emit
+    reporter.get_traceback_text(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\views\debug.py", line 418, in get_traceback_text
+    return t.render(c)
+           ~~~~~~~~^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\test\client.py", line 267, in store_rendered_templates
+    store["context"].append(copy(context))
+                            ~~~~^^^^^^^^^
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\copy.py", line 82, in copy
+    return copier(x)
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 158, in __copy__
+    duplicate = super().__copy__()
+  File "C:\Users\ARJUN\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\context.py", line 39, in __copy__
+    duplicate.dicts = self.dicts[:]
+    ^^^^^^^^^^^^^^^
+AttributeError: 'super' object has no attribute 'dicts' and no __dict__ for setting new attributes
+
+----------------------------------------------------------------------
+Ran 19 tests in 13.173s
+
+FAILED (errors=2)
+Destroying test database for alias 'default'...

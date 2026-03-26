@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forgot Password</title>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f6efec;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .card {
+            background: #2c3e50;
+            width: 350px;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(30,90,112,0.6);
+            text-align: center;
+            color: white;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .card h2 {
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+
+        .card input {
+           width: calc(100% - 24px);
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 25px;
+            border: none;
+            outline: none;
+            
+        }
+
+        .card button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 25px;
+            border: none;
+            background: white;
+            font-weight: bold;
+            cursor: pointer;
+           
+        }
+
+        .card a {
+            display: block;
+            margin-top: 15px;
+            color:white;
+            text-decoration: none;
+            font-size: 14px;
+            
+        }
+        
+        button:hover {
+            background-color: #a5bcda;
+            transform: translateY(-2px);
+            
+        }
+        
+    </style>
+       <script>
+    function forgotpass() {
+        alert("Password Reset Link will be sent to your registered mail id");
+        return false; // prevents page refresh
+    }
+</script>
+</head>
+<body>
+
+<div class="card">
+    <h2>FORGOT PASSWORD</h2>
+
+    <form onsubmit="return forgotpass()">
+        <input type="email" placeholder="Enter your email" required>
+
+        <button type="submit">RESET PASSWORD</button>
+    </form>
+
+    <a href="login.html">Back to Login</a>
+</div>
+
+<script>
+    function forgotpass() {
+        alert("Password Reset Link will be sent to your registered mail id");
+        window.location.href = "login.html";
+        return false;
+    }
+</script>
+
+</body>
+
+</html>

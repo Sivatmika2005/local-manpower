@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Provider Name | Profile</title>
+
+<style>
+body{
+    margin:0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* PAGE CONTAINER */
+.profile-container{
+    max-width:900px;
+    margin:40px auto;
+    background:white;
+    border-radius:18px;
+    padding:30px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.08);
+}
+
+/* TOP SECTION */
+.profile-top{
+    display:flex;
+    gap:30px;
+    align-items:center;
+    border-bottom:1px solid #e2e8f0;
+    padding-bottom:20px;
+}
+
+/* IMAGE */
+.profile-img{
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid #e2e8f0;
+}
+
+/* INFO */
+.profile-info h2{
+    margin:0;
+    color:#0f172a;
+}
+
+.profile-info p{
+    margin:6px 0;
+    color:#475569;
+    font-size:14px;
+}
+
+.rating{
+    color:#facc15;
+    font-weight:600;
+}
+
+/* DETAILS */
+.profile-details{
+    margin-top:25px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.detail-box{
+    background:#f8fafc;
+    padding:18px;
+    border-radius:12px;
+    border:1px solid #e2e8f0;
+}
+
+.detail-box h4{
+    margin:0 0 6px;
+    color:#0f172a;
+}
+
+.detail-box p{
+    margin:0;
+    color:#475569;
+    font-size:14px;
+}
+
+/* BOOK BUTTON */
+.book-section{
+    margin-top:30px;
+    text-align:center;
+}
+
+.book-btn{
+    padding:12px 30px;
+    font-size:15px;
+    border-radius:10px;
+    border:none;
+    background:#2563eb;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.book-btn:hover{
+    background:#1e40af;
+}
+</style>
+</head>
+
+<body>
+
+<div class="profile-container">
+
+    <!-- TOP -->
+    <div class="profile-top">
+        <img src="img2.jpg" class="profile-img">
+
+        <div class="profile-info">
+            <h2>Provider Name</h2>
+            <p>Electrician</p>
+            <p class="rating">⭐ 4.4 (55 reviews)</p>
+            <p>📍 Salem, Tamil Nadu</p>
+        </div>
+    </div>
+
+    <!-- DETAILS -->
+    <div class="profile-details">
+        <div class="detail-box">
+            <h4>Ph No:</h4>
+            <p>9876543226</p>
+        </div>
+
+        <div class="detail-box">
+            <h4>Skills</h4>
+            <p>Basic wiring, Outlet installation, Minor repairs</p>
+        </div>
+
+        <div class="detail-box">
+            <h4>Availability</h4>
+            <p>Mon – Sat | 9 AM – 5 PM</p>
+        </div>
+
+        <div class="detail-box">
+            <h4>Service Area</h4>
+            <p>Salem & nearby locations</p>
+        </div>
+    </div>
+
+    <!-- BOOK -->
+    <div class="book-section">
+        <a href="{% url 'booking' %}"><button class="book-btn">Book Now</button></a>
+    </div>
+
+</div>
+
+{% include "core/chatbot_include.html" %}
+</body>
+</html>

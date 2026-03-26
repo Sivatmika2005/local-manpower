@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forgot Password</title>
+    <script src="{% static 'core/js/api-service.js' %}"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        body {
+            margin: 0; height: 100vh; display: flex;
+            justify-content: center; align-items: center;
+            background: #f6efec;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .card {
+            background: #2c3e50; width: 370px; padding: 40px 30px;
+            border-radius: 20px; box-shadow: 0 0 30px rgba(30,90,112,0.6);
+            text-align: center; color: white; animation: fadeIn 0.8s ease-out;
+        }
+        .card h2 { margin-bottom: 25px; letter-spacing: 1px; }
+        .card input {
+            width: calc(100% - 24px); padding: 12px; margin: 10px 0;
+            border-radius: 25px; border: none; outline: none;
+        }
+        .card button {
+            width: 100%; padding: 13px; margin-top: 12px;
+            border-radius: 25px; border: none; background: white;
+            font-weight: bold; cursor: pointer; transition: background 0.2s;
+        }
+        .card button:hover { background: #a5bcda; }
+        .card a { display: block; margin-top: 15px; color: white; text-decoration: none; font-size: 14px; }
+        .msg { margin-top: 12px; font-size: 13px; min-height: 18px; }
+        .step { display: none; }
+        .step.active { display: block; }
+        .otp-popup {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
+            background: #28a745; color: white; padding: 15px 30px; border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3); font-weight: bold; z-index: 1000;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0; pointer-events: none; text-align: center;
+        }
+        .otp-popup.show { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+    </style>
+</head>
+<body>
+
+<div class="otp-popup" id="otpPopup">
+    <div id="otpPopupText"></div>
+    <div style="font-size: 12px; font-weight: normal; margin-top: 5px; opacity: 0.8;">(Dismissing automatically in 1 minute)</div>
+</div>
+<div class="card">
+    <h2>FORGOT PASSWORD</h2>
+
+    <!-- Step 1: Enter email -->
+    <div class="step active" id="step1">
+        <input type="email" id="emailInput" placeholder="Enter your email" required>
+        <button onclick="sendOTP()">SEND OTP</button>
+        <div class="msg" id="msg1"></div>
+    </div>
+
+    <!-- Step 2: Enter OTP + new password -->
+    <div class="step" id="step2">
+        <input type="text" id="otpInput" placeholder="Enter 6-digit OTP" maxlength="6">
+        <input type="password" id="newPass" placeholder="New Password">
+        <input type="password" id="confirmPass" placeholder="Confirm Password">
+        <button onclick="resetPassword()">RESET PASSWORD</button>
+        <div class="msg" id="msg2"></div>
+    </div>
+
+    <a href="{% url 'login' %}">Back to Login</a>
+</div>
+
+<script>
+async function sendOTP() {
+    const email = document.getElementById('emailInput').value.trim();
+    const msg = document.getElementById('msg1');
+    if (!email) { msg.textContent = 'Please enter your email.'; return; }
+
+    msg.textContent = 'Sending OTP...';
+    try {
+        const res = await window.apiService.sendPasswordResetOTP(email);
+        if (res.success) {
+            msg.textContent = 'OTP generated! Check your prompts.';
+            // Show the OTP for 1 minute as requested
+            if (res.dev_otp) {
+                const popup = document.getElementById('otpPopup');
+                document.getElementById('otpPopupText').innerHTML = `Developer OTP: <span style="font-size: 1.4em; letter-spacing: 2px;">${res.dev_otp}</span>`;
+                popup.classList.add('show');
+                setTimeout(() => { popup.classList.remove('show'); }, 60000); // 1 minute
+            }
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+        } else {
+            msg.textContent = res.message || 'Failed to send OTP.';
+        }
+    } catch (e) {
+        msg.textContent = 'Server error. Please try again.';
+    }
+}
+
+async function resetPassword() {
+    const email = document.getElementById('emailInput').value.trim();
+    const otp = document.getElementById('otpInput').value.trim();
+    const newPass = document.getElementById('newPass').value;
+    const confirmPass = document.getElementById('confirmPass').value;
+    const msg = document.getElementById('msg2');
+
+    if (newPass !== confirmPass) { msg.textContent = 'Passwords do not match.'; return; }
+    if (newPass.length < 6) { msg.textContent = 'Password must be at least 6 characters.'; return; }
+
+    msg.textContent = 'Verifying...';
+    try {
+        const res = await window.apiService.resetPassword(email, otp, newPass);
+        if (res.success) {
+            alert('Password reset successful! Please login.');
+            window.location.href = "{% url 'login' %}";
+        } else {
+            msg.textContent = res.message || 'Invalid or expired OTP.';
+        }
+    } catch (e) {
+        msg.textContent = 'Server error. Please try again.';
+    }
+}
+</script>
+</body>
+</html>

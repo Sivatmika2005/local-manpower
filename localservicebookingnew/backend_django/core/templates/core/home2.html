@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Man Power Service Provider</title>
+    <!-- Session Manager -->
+    <script src="../session-manager.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="home.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .profile-name {
+            color: white;
+            font-weight: 500;
+            margin: 0 10px;
+            font-size: 14px;
+        }
+        
+        .profile-dropdown {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 180px;
+            z-index: 1000;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .dropdown-menu a:hover {
+            background: #f8f9fa;
+        }
+        
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<header>
+    <div class="logo">Local Man Power<span> Service Provider</span></div>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="home.html#services">Services</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="home.html#contact">Contact</a>
+        
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-dropdown" onclick="toggleDropdown()">
+                <img src="https://picsum.photos/seed/profile/40/40.jpg" alt="Profile" class="profile-img">
+                <span class="profile-name" id="profileName">Guest</span>
+                <i class="fas fa-chevron-down"></i>
+                <div class="dropdown-menu" id="profileDropdown">
+                    <a href="#">My Profile</a>
+                    <a href="#" onclick="logout()" style="color: #e74c3c; border-top: 1px solid #eee;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- ===== HERO / CAROUSEL ===== -->
+<section class="hero">
+    <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1581090700227-1e37b190418e');">
+        <div class="content">
+            <h1>Professional Electrical Services</h1>
+            <p>Wiring, Repairs & Installations</p>
+            <!-- <button class="btn" >Book Now</button> -->
+        </div>
+    </div>
+
+    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c');">
+        <div class="content">
+            <h1>Trusted Plumbing Experts</h1>
+            <p>Leak Repairs & Pipe Fittings</p>
+            <!-- <button class="btn">Book Now</button> -->
+        </div>
+    </div>
+
+    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2');">
+        <div class="content">
+            <h1>Reliable Mechanical Services</h1>
+            <p>Bike & Car Repairs</p>
+            <!-- <button class="btn">Book Now</button> -->
+        </div>
+    </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="services" id="services">
+    <h2>Our Services</h2>
+    <div class="service-cards">
+        <div class="card">
+            <i class="fa-solid fa-bolt"></i>
+            <h3>Electrician</h3>
+            <p>Expert electrical solutions</p>
+            <a href="{% url 'electrician_listing' %}"><button>View Details</button></a>
+        </div>
+
+        <div class="card">
+            <i class="fa-solid fa-wrench"></i>
+            <h3>Plumber</h3>
+            <p>Leak repairs & installations</p>
+            <a href="{% url 'plumber_listing' %}"><button>View Details</button></a>
+        </div>
+
+        <div class="card">
+            <i class="fa-solid fa-car"></i>
+            <h3>Mechanic</h3>
+            <p>Auto repair & maintenance</p>
+            <a href="{% url 'mechanic_listing' %}"><button>View Details</button></a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== WHY CHOOSE US ===== -->
+<section class="why">
+    <h2>Why Choose Us?</h2>
+    <div class="why-box">
+        <div><i class="fa-solid fa-shield"></i><p>Verified Professionals</p></div>
+        <div><i class="fa-solid fa-wallet"></i><p>Affordable Pricing</p></div>
+        <div><i class="fa-solid fa-clock"></i><p>Fast Service</p></div>
+        <div><i class="fa-solid fa-headset"></i><p>24/7 Support</p></div>
+    </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="how">
+    <h2>How It Works</h2>
+    <div class="steps">
+        <div>1️⃣ Choose Service</div>
+        <div>2️⃣ Book Online</div>
+        <div>3️⃣ Get It Fixed</div>
+    </div>
+</section>
+<!-- ===== FOOTER ===== -->
+<footer id="contact">
+    <p>📞+91 123-456-7890 | 📧 localserviceprovider@gmail.com</p>
+    <p>© 2026 Local Man Power Service Provider</p>
+</footer>
+
+<script>
+function toggleDropdown() {
+    const dropdown = document.getElementById('profileDropdown');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+}
+
+
+
+document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('profileDropdown');
+    const profileSection = document.querySelector('.profile-dropdown');
+    
+    if (!profileSection.contains(event.target)) {
+        dropdown.style.display = 'none';
+    }
+});
+
+// Load user session and display name
+window.addEventListener('DOMContentLoaded', function() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser && currentUser.userId) {
+        console.log('Redirecting to main home page');
+        window.location.href = 'home.html';
+    } else {
+        window.location.href = 'login.html';
+    }
+});
+
+function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('currentCustomer');
+        localStorage.removeItem('currentProvider');
+        window.location.href = 'login.html';
+    }
+}
+</script>
+<script src="home.js"></script>
+{% include "core/chatbot_include.html" %}
+</body>
+</html>

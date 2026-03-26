@@ -1,0 +1,664 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Local Man Power Service Provider</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'core/css/admin_dashboard.css' %}">
+    <style>
+        /* Additional styles for pie chart */
+        .pie-chart {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #16a085 0deg 108deg,
+                #f39c12 108deg 216deg,
+                #e74c3c 216deg 288deg,
+                #4a90e2 288deg 360deg
+            );
+            margin: 0 auto 1rem;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .pie-chart::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .pie-legend {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .pie-legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .pie-legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#" style="white-space: nowrap; font-size: 1.15rem; letter-spacing: -0.2px; padding-right: 15px;">
+                <strong>Local Man Power</strong> Service Provider
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
+                <div class="user-profile">
+                    <div class="profile-btn" onclick="toggleDrop()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); color: white; padding: 5px 12px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 14px; position: relative;">
+                        <div class="profile-avatar" id="navAvt" style="width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; color: white;">A</div>
+                        <span id="navNm">Admin</span>
+                        <i class="fas fa-chevron-down"></i>
+                        <div class="dropdown-menu-custom" id="dd" style="display: none; position: absolute; top: calc(100% + 10px); right: 0; background: white; border-radius: 12px; min-width: 210px; box-shadow: 0 12px 40px rgba(0,0,0,0.15); z-index: 9999; border: 1px solid #f1f5f9; overflow: hidden; list-style: none; padding: 0; margin: 0; text-align: left;">
+                            <div class="dd-header" style="padding: 16px 18px; border-bottom: 1px solid #f1f5f9; cursor: default; background: #f8f9fa;">
+                                <div style="font-weight: 700; color: #1e293b; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="ddName">Admin</div>
+                                <div style="color: #64748b; font-size: 0.8rem; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="ddEmail">admin@example.com</div>
+                            </div>
+                            <a href="{% url 'admin_dashboard' %}" style="display: flex; align-items: center; gap: 12px; padding: 14px 18px; color: #374151; font-size: 0.9rem; font-weight: 500; text-decoration: none; transition: background 0.15s; width: 100%;"><i class="fas fa-chart-pie" style="color: #6366f1; width: 22px; text-align: center;"></i> Dashboard</a>
+                            <a href="{% url 'my_profile' %}" style="display: flex; align-items: center; gap: 12px; padding: 14px 18px; color: #374151; font-size: 0.9rem; font-weight: 500; text-decoration: none; transition: background 0.15s; width: 100%;"><i class="fas fa-user-circle" style="color: #6366f1; width: 22px; text-align: center;"></i> My Profile</a>
+                            <div class="dropdown-divider" style="height: 1px; background: #f1f5f9; margin: 0;"></div>
+                            <a class="logout" href="#" onclick="logout();return false;" style="display: flex; align-items: center; gap: 12px; padding: 14px 18px; color: #ef4444; font-size: 0.9rem; font-weight: 500; text-decoration: none; transition: background 0.15s; width: 100%;"><i class="fas fa-sign-out-alt" style="color: #ef4444; width: 22px; text-align: center;"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <div class="container">
+            <h1>Admin Dashboard</h1>
+            <p class="lead">Manage the entire platform</p>
+        </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="container">
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <i class="fas fa-users"></i>
+                    <h3 id="topTotalCustomers">0</h3>
+                    <p>Total Customers</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <i class="fas fa-user-tie"></i>
+                    <h3 id="topTotalProviders">0</h3>
+                    <p>Total Providers</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <i class="fas fa-calendar-check"></i>
+                    <h3 id="topTotalBookings">0</h3>
+                    <p>Total Bookings</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <i class="fas fa-tools"></i>
+                    <h3 id="topTotalServices">0</h3>
+                    <p>Services</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Recent Bookings</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Booking ID</th>
+                                        <th>Customer</th>
+                                        <th>Provider</th>
+                                        <th>Service</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentBookingsTbody">
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4 text-muted">Loading recent bookings...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Quick Actions</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" onclick="manageUsers()">
+                                <i class="fas fa-users"></i> Manage Users
+                            </button>
+                            <button class="btn btn-success" onclick="manageProviders()">
+                                <i class="fas fa-tools"></i> Manage Services
+                            </button>
+                            <button class="btn btn-warning" onclick="document.querySelector('.table-responsive').scrollIntoView({behavior: 'smooth'})">
+                                <i class="fas fa-calendar"></i> Manage Bookings
+                            </button>
+                            <button class="btn btn-info" onclick="document.querySelector('#barChartArea').scrollIntoView({behavior: 'smooth'})">
+                                <i class="fas fa-chart-bar"></i> View Reports
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h4>Recent Activity</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <small class="text-muted">Last 7 days</small>
+                        </div>
+                        <h5>23</h5>
+                        <p class="text-muted">New bookings</p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+
+        <!-- Detailed Analytics with Charts -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <h2 class="section-title">Analytics & Insights</h2>
+            </div>
+            
+            <!-- Bar Chart -->
+            <div class="col-md-8">
+                <div class="chart-container">
+                    <h5 class="chart-title"><i class="fas fa-chart-bar"></i> Monthly Performance</h5>
+                    <div id="barChartArea">
+                        <p class="text-muted text-center pt-3 mt-3">Loading performance data...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pie Chart -->
+            <div class="col-md-4">
+                <div class="chart-container">
+                    <h5 class="chart-title"><i class="fas fa-chart-pie"></i> Service Distribution</h5>
+                    <div class="pie-chart" id="pieChart"></div>
+                    <div class="pie-legend" id="pieLegend">
+                        <!-- Legend will be populated natively by Javascript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="row mt-1">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4><i class="fas fa-tachometer-alt"></i> Key Performance Indicators</h4>
+                    </div>
+                    <div class="card-body pb-4 pt-4">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="text-center">
+                                    <h3 class="text-primary" id="kpiTotal">0</h3>
+                                    <p class="text-muted">Total Bookings</p>
+                                    <small class="text-success" id="kpiTotalTrend"><i class="fas fa-arrow-up"></i> Generated safely</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center">
+                                    <h3 class="text-success" id="kpiCust">0</h3>
+                                    <p class="text-muted">Active Customers</p>
+                                    <small class="text-success"><i class="fas fa-arrow-up"></i> Platform live</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center">
+                                    <h3 class="text-warning" id="kpiProv">0</h3>
+                                    <p class="text-muted">Active Providers</p>
+                                    <small class="text-warning"><i class="fas fa-arrow-up"></i> Platform live</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center">
+                                    <h3 class="text-info" id="kpiRating">4.8</h3>
+                                    <p class="text-muted">Avg. Rating</p>
+                                    <small class="text-success"><i class="fas fa-arrow-up"></i> Platform live</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Booking Details -->
+    <div class="modal fade" id="bookingDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Booking Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="bookingDetailsContent">
+                        <!-- Content will be loaded via JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{% static 'core/js/session-manager.js' %}"></script>
+    <script src="{% static 'core/js/api-service.js' %}"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="{% static 'core/js/firebase-config.js' %}"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // const socket = io(); // Socket.io dependency missing, commenting out for now
+        let allStats = { providers: 0, customers: 0, bookings: 0 };
+        window.adminBksMap = {};
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadStats();
+            setupSocket();
+            
+            // Set user profile data
+            const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const nm = u.fullName || u.username || 'Admin';
+            const em = u.email || 'admin@example.com';
+            const ini = nm.substring(0,2).toUpperCase();
+            
+            if(document.getElementById('navNm')) document.getElementById('navNm').textContent = nm;
+            if(document.getElementById('navAvt')) document.getElementById('navAvt').textContent = ini;
+            if(document.getElementById('ddName')) document.getElementById('ddName').textContent = nm;
+            if(document.getElementById('ddEmail')) document.getElementById('ddEmail').textContent = em;
+        });
+
+        function toggleDrop() {
+            const dd = document.getElementById('dd');
+            if(dd) dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+        }
+
+        document.addEventListener('click', e => {
+            const dd = document.getElementById('dd');
+            if (dd && dd.style.display !== 'none' && !e.target.closest('.profile-btn')) {
+                dd.style.display = 'none';
+            }
+        });
+
+        async function loadStats() {
+            try {
+                const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                const adminUsername = user.username || '';
+                const token = localStorage.getItem('authToken');
+                const headers = token
+                    ? { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+                    : { 'Content-Type': 'application/json' };
+
+                const res = await fetch(`/api/admin/bookings/?username=${encodeURIComponent(adminUsername)}`, { headers });
+                const bookingsData = await res.json();
+                const tbody = document.getElementById('recentBookingsTbody');
+
+                if (bookingsData.success) {
+                    tbody.innerHTML = '';
+                    if (bookingsData.bookings.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4">No recent bookings found.</td></tr>';
+                    } else {
+                        const uniqueUsers = new Set();
+                        const uniqueProv = new Set();
+                        const svcCounts = {};
+                        const mCounts = {};
+
+                        bookingsData.bookings.forEach(b => {
+                            window.adminBksMap[b.bookingId || b.id] = b;
+                            if(b.user_name) uniqueUsers.add(b.user_name);
+                            if(b.provider_name) uniqueProv.add(b.provider_name);
+                            
+                            const s = (b.provider_service || 'Other').toLowerCase();
+                            svcCounts[s] = (svcCounts[s] || 0) + 1;
+                            
+                            if(b.date && b.date.includes('-')) {
+                                const m = parseInt(b.date.split('-')[1], 10) - 1;
+                                mCounts[m] = (mCounts[m] || 0) + 1;
+                            }
+
+                            let badgeClass = 'bg-secondary';
+                            if (b.status === 'Completed') badgeClass = 'bg-success';
+                            else if (b.status === 'Pending') badgeClass = 'bg-warning text-dark';
+                            else if (b.status === 'Confirmed' || b.status === 'Accepted' || b.status === 'In Progress') badgeClass = 'bg-info text-dark';
+                            else if (b.status === 'Cancelled') badgeClass = 'bg-danger';
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td>${b.bookingId || b.id}</td>
+                                <td>${b.user_name || 'Guest'}</td>
+                                <td>${b.provider_name || 'Unknown Provider'}</td>
+                                <td>${b.provider_service ? (b.provider_service.charAt(0).toUpperCase() + b.provider_service.slice(1)) : '-'}</td>
+                                <td><span class="badge ${badgeClass}">${b.status || 'Pending'}</span></td>
+                                <td>${b.date || '-'}</td>
+                                <td><button class="btn btn-sm btn-info text-white" onclick="viewBookingDetailsModal('${b.bookingId || b.id}')"><i class="fas fa-eye"></i></button></td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+
+                        // Populate KPIs
+                        const elTotal = document.getElementById('kpiTotal');
+                        if (elTotal) elTotal.textContent = bookingsData.bookings.length;
+                        const elCust = document.getElementById('kpiCust');
+                        if (elCust) elCust.textContent = uniqueUsers.size;
+                        const elProv = document.getElementById('kpiProv');
+                        if (elProv) elProv.textContent = uniqueProv.size;
+
+                        // Populate Top Header Cards
+                        const topTotBks = document.getElementById('topTotalBookings');
+                        if (topTotBks) topTotBks.textContent = bookingsData.bookings.length;
+                        const topTotCst = document.getElementById('topTotalCustomers');
+                        if (topTotCst) topTotCst.textContent = uniqueUsers.size;
+                        const topTotPrv = document.getElementById('topTotalProviders');
+                        if (topTotPrv) topTotPrv.textContent = uniqueProv.size;
+                        const topTotSvc = document.getElementById('topTotalServices');
+                        if (topTotSvc) topTotSvc.textContent = Object.keys(svcCounts).length;
+
+                        // Populate Pie Chart smoothly
+                        const totalSvc = bookingsData.bookings.length || 1;
+                        const colors = ['#28a745', '#ffc107', '#dc3545', '#17a2b8', '#6610f2'];
+                        let pieGradient = [];
+                        let legendsHtml = '';
+                        let curentPct = 0;
+                        Object.keys(svcCounts).forEach((svc, idx) => {
+                            const pct = Math.round((svcCounts[svc] / totalSvc) * 100);
+                            const c = colors[idx % colors.length];
+                            pieGradient.push(`${c} ${curentPct}% ${curentPct + pct}%`);
+                            curentPct += pct;
+                            legendsHtml += `<div class="pie-legend-item"><div class="pie-legend-color" style="background: ${c}"></div><span style="text-transform:capitalize;">${svc} (${pct}%)</span></div>`;
+                        });
+                        const pieChart = document.getElementById('pieChart');
+                        if(pieChart) pieChart.style.background = `conic-gradient(${pieGradient.join(', ')})`;
+                        const pieLegend = document.getElementById('pieLegend');
+                        if(pieLegend) pieLegend.innerHTML = legendsHtml;
+
+                        // Populate Bar Chart
+                        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                        const max_m = Math.max(...Object.values(mCounts), 1);
+                        const sortedMonths = Object.keys(mCounts).sort((a,b)=> parseInt(a) - parseInt(b));
+                        const barHtml = sortedMonths.map(mStr => {
+                            const m = parseInt(mStr);
+                            const count = mCounts[m];
+                            const pct = Math.round((count / max_m) * 100);
+                            return `<div class="chart-bar"><label>${monthNames[m]}</label><div class="bar" style="width: ${Math.max(pct, 5)}%"><span class="value">${count}</span></div></div>`;
+                        }).join('');
+                        const barChartArea = document.getElementById('barChartArea');
+                        if(barChartArea && barHtml) barChartArea.innerHTML = barHtml;
+                    }
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">Error: ${bookingsData.message || 'Could not load'}</td></tr>`;
+                }
+            } catch (error) {
+                console.error('Bookings load error:', error);
+                const tbody = document.getElementById('recentBookingsTbody');
+                if (tbody) tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-danger">Failed to load bookings.</td></tr>';
+            }
+        }
+
+        function setupSocket() {
+            /* 
+            socket.on('adminNewBooking', (booking) => {
+                showNotification(`🔔 New Booking! #${booking.bookingId} for ${booking.serviceType}`);
+                loadStats();
+            });
+
+            socket.on('newProvider', (provider) => {
+                showNotification(`🆕 New Provider Registered: ${provider.fullName}`);
+                loadStats();
+            });
+
+            socket.on('adminBookingStatusChanged', (data) => {
+                showNotification(`🔄 Booking #${data.bookingId} status changed to ${data.status}`);
+            });
+            */
+        }
+
+        function showNotification(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'alert alert-info position-fixed bottom-0 end-0 m-3';
+            toast.style.zIndex = '9999';
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 5000);
+        }
+
+        function viewBookingDetailsModal(id) {
+            const b = window.adminBksMap[id];
+            if(!b) return;
+            document.getElementById('bookingDetailsContent').innerHTML = `
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <p class="mb-1 text-muted">Booking ID</p>
+                        <h6>${b.bookingId || b.id}</h6>
+                        <p class="mb-1 text-muted mt-3">Status</p>
+                        <h6><span class="badge bg-secondary">${b.status}</span></h6>
+                        <p class="mb-1 text-muted mt-3">Date & Time</p>
+                        <h6>${b.date} at ${b.time}</h6>
+                        <p class="mb-1 text-muted mt-3">Address</p>
+                        <h6>${b.address || 'N/A'}</h6>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <p class="mb-1 text-muted">Customer Name</p>
+                        <h6>${b.user_name}</h6>
+                        <p class="mb-1 text-muted mt-3">Assigned Provider</p>
+                        <h6>${b.provider_name}</h6>
+                        <p class="mb-1 text-muted mt-3">Service Type</p>
+                        <h6 style="text-transform:capitalize;">${b.provider_service || 'N/A'}</h6>
+                        <p class="mb-1 text-muted mt-3">Amount Charged</p>
+                        <h6>₹${parseFloat(b.service_amount || 0).toFixed(2)}</h6>
+                    </div>
+                </div>
+            `;
+            const modalEl = document.getElementById('bookingDetailsModal');
+            if(window.bootstrap && window.bootstrap.Modal) {
+                new bootstrap.Modal(modalEl).show();
+            } else {
+                modalEl.style.display = 'block';
+                modalEl.style.opacity = '1';
+                modalEl.style.background = 'rgba(0,0,0,0.5)';
+                const closeBtn = modalEl.querySelector('.btn-close');
+                if(closeBtn) closeBtn.onclick = () => { modalEl.style.display = 'none'; };
+            }
+        }
+
+        function manageUsers() {
+            const users = new Set();
+            Object.values(window.adminBksMap).forEach(b => {
+                if (b.user_name) users.add(b.user_name);
+            });
+            const listHtml = Array.from(users).map(u => `
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div><strong>${u}</strong></div>
+                    <div>
+                        <span class="badge bg-primary rounded-pill me-2">Active</span>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-outline-danger" onclick="makeAdmin('${u}')" title="Make Admin">
+                                <i class="fas fa-arrow-up"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="demoteAdmin('${u}')" title="Remove Admin">
+                                <i class="fas fa-arrow-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            `).join('');
+            document.getElementById('bookingDetailsContent').innerHTML = `
+                <div class="mb-3">
+                    <h6 class="text-primary mb-3">Registered Customers (Active)</h6>
+                    <ul class="list-group">
+                        ${listHtml || '<li class="list-group-item text-muted">No users found.</li>'}
+                    </ul>
+                </div>
+            `;
+            const modalEl = document.getElementById('bookingDetailsModal');
+            if(window.bootstrap && window.bootstrap.Modal) {
+                new bootstrap.Modal(modalEl).show();
+            } else {
+                modalEl.style.display = 'block';
+                modalEl.style.opacity = '1';
+                modalEl.style.background = 'rgba(0,0,0,0.5)';
+                const closeBtn = modalEl.querySelector('.btn-close');
+                if(closeBtn) closeBtn.onclick = () => { modalEl.style.display = 'none'; };
+            }
+        }
+
+        function manageProviders() {
+            const providers = {};
+            Object.values(window.adminBksMap).forEach(b => {
+                if (b.provider_name) providers[b.provider_name] = b.provider_service;
+            });
+            const listHtml = Object.keys(providers).map(p => `
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div><strong>${p}</strong><br><small class="text-muted" style="text-transform:capitalize;">${providers[p]}</small></div>
+                    <div>
+                        <span class="badge bg-success rounded-pill me-2">Active</span>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-outline-danger" onclick="makeAdmin('${p}')" title="Make Admin">
+                                <i class="fas fa-arrow-up"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="demoteAdmin('${p}')" title="Remove Admin">
+                                <i class="fas fa-arrow-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            `).join('');
+            document.getElementById('bookingDetailsContent').innerHTML = `
+                <div class="mb-3">
+                    <h6 class="text-success mb-3">Registered Service Providers (Active)</h6>
+                    <ul class="list-group">
+                        ${listHtml || '<li class="list-group-item text-muted">No providers found.</li>'}
+                    </ul>
+                </div>
+            `;
+            const modalEl = document.getElementById('bookingDetailsModal');
+            if(window.bootstrap && window.bootstrap.Modal) {
+                new bootstrap.Modal(modalEl).show();
+            } else {
+                modalEl.style.display = 'block';
+                modalEl.style.opacity = '1';
+                modalEl.style.background = 'rgba(0,0,0,0.5)';
+                const closeBtn = modalEl.querySelector('.btn-close');
+                if(closeBtn) closeBtn.onclick = () => { modalEl.style.display = 'none'; };
+            }
+        }
+
+        async function makeAdmin(username) {
+            if(!confirm(`Are you sure you want to promote ${username} to Admin?`)) return;
+            try {
+                const admin_username = JSON.parse(localStorage.getItem('currentUser') || '{}').username;
+                const token = localStorage.getItem('authToken');
+                const headers = token ? { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
+                
+                const res = await fetch('/api/admin/promote/', {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({username: username, admin_username: admin_username, action: 'promote'})
+                });
+                const data = await res.json();
+                if(data.success) {
+                    alert(`Success: ${username} is now an Admin!`);
+                } else {
+                    alert('Failed: ' + data.message);
+                }
+            } catch(e) {
+                console.error(e);
+                alert('Error promoting user.');
+            }
+        }
+
+        async function demoteAdmin(username) {
+            if(!confirm(`Are you sure you want to completely remove Admin privileges from ${username}?`)) return;
+            try {
+                const admin_username = JSON.parse(localStorage.getItem('currentUser') || '{}').username;
+                const token = localStorage.getItem('authToken');
+                const headers = token ? { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
+                
+                const res = await fetch('/api/admin/promote/', {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({username: username, admin_username: admin_username, action: 'demote'})
+                });
+                const data = await res.json();
+                if(data.success) {
+                    alert(`Success: ${username} is now an Admin!`);
+                } else {
+                    alert('Failed: ' + data.message);
+                }
+            } catch(e) {
+                console.error(e);
+                alert('Error promoting user.');
+            }
+        }
+
+        function editBooking(bookingId) {
+            alert(`Edit functionality for booking #${bookingId}`);
+        }
+
+        function logout() {
+            if (confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem('currentUser');
+                window.location.href = "{% url 'login' %}";
+            }
+        }
+    </script>
+{% include "core/chatbot_include.html" %}
+</body>
+</html>

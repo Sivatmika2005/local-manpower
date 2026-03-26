@@ -1,0 +1,448 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings - Local Man Power Service Provider</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="{% static 'core/js/session-manager.js' %}"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; min-height: 100vh; color: #2c3e50; }
+        header { display: flex; justify-content: space-between; padding: 15px 50px; background: #2c3e50; color: white; align-items: center; }
+        .logo { font-size: 22px; font-weight: 700; color: white; text-decoration: none; }
+        nav { display: flex; align-items: center; }
+        nav > a { color: white; text-decoration: none; margin-left: 20px; font-weight: 500; transition: opacity 0.2s; }
+        nav > a:hover { opacity: 0.8; }
+        
+        /* Dropdown Styles */
+        .profile-btn {
+            display: flex; align-items: center; gap: 9px; cursor: pointer;
+            padding: 5px 10px; border-radius: 25px; transition: background 0.2s; position: relative;
+            margin-left: 20px;
+        }
+        .profile-btn:hover { background: rgba(255,255,255,0.08); }
+        .profile-avatar {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.8rem; color: white;
+        }
+        .profile-btn span { color: #e2e8f0; font-size: 0.85rem; font-weight: 500; text-transform: capitalize; }
+        .profile-btn > i { color: #94a3b8; font-size: 0.7rem; transition: transform 0.2s; }
+        .profile-btn.active > i { transform: rotate(180deg); }
+        
+        .dropdown-menu-custom {
+            display: none; position: absolute; top: 100%; right: 0; margin-top: 10px;
+            background: white; border-radius: 12px; min-width: 210px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15); z-index: 9999; overflow: visible;
+            border: 1px solid #f1f5f9;
+        }
+        .dropdown-menu-custom.show { display: block !important; animation: slideDown 0.2s ease-out; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+        .dropdown-menu-custom a {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 18px; color: #374151; font-size: 0.9rem; font-weight: 500; text-decoration: none;
+            transition: all 0.15s; text-align: left; margin-left: 0;
+        }
+        .dropdown-menu-custom a:hover { background: #f8fafc; color: #1e293b; }
+        .dropdown-menu-custom a i { color: #6366f1; width: 22px; font-size: 1rem; text-align: center; }
+        .dropdown-menu-custom a.logout { color: #ef4444; }
+        .dropdown-menu-custom a.logout:hover { background: #fee2e2; color: #b91c1c; }
+        .dropdown-menu-custom a.logout i { color: #ef4444; }
+        .dropdown-divider { height: 1px; background: #f1f5f9; margin: 4px 0; }
+
+        .bookings-container { max-width: 1100px; margin: 40px auto; background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); overflow: hidden; }
+        .bookings-header { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); color: white; padding: 35px 40px; text-align: center; }
+        .bookings-header h1 { font-size: 28px; margin-bottom: 8px; }
+        .bookings-header p { opacity: 0.85; }
+
+        .bookings-content { padding: 30px 40px; }
+
+        .stats-section { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 20px; text-align: center; }
+        .stat-card i { font-size: 24px; color: #2c3e50; margin-bottom: 10px; }
+        .stat-value { font-size: 22px; font-weight: 700; color: #2c3e50; }
+        .stat-label { font-size: 13px; color: #6c757d; margin-top: 4px; }
+
+        .filter-tabs { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+        .filter-tab { background: #f8f9fa; border: 2px solid #e9ecef; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: 500; color: #6c757d; transition: all 0.2s; }
+        .filter-tab.active { background: #2c3e50; color: white; border-color: #2c3e50; }
+
+        .bookings-list { display: flex; flex-direction: column; gap: 15px; }
+        .booking-card { background: #f8f9fa; border-radius: 12px; padding: 20px; border: 1px solid #e9ecef; border-left: 4px solid #2c3e50; transition: box-shadow 0.2s; }
+        .booking-card:hover { box-shadow: 0 5px 20px rgba(0,0,0,0.08); }
+        .booking-card.status-Confirmed { border-left-color: #28a745; }
+        .booking-card.status-Pending { border-left-color: #ffc107; }
+        .booking-card.status-Completed { border-left-color: #17a2b8; }
+        .booking-card.status-Cancelled { border-left-color: #dc3545; opacity: 0.75; }
+
+        .booking-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .booking-id { font-size: 13px; color: #6c757d; }
+        .booking-provider { font-size: 18px; font-weight: 700; color: #2c3e50; }
+        .booking-service { font-size: 13px; color: #6c757d; }
+        .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        .badge-Confirmed { background: #d4edda; color: #155724; }
+        .badge-Accepted { background: #cce5ff; color: #004085; }
+        .badge-Pending { background: #fff3cd; color: #856404; }
+        .badge-Completed { background: #e2e3e5; color: #383d41; }
+        .badge-Cancelled { background: #f8d7da; color: #721c24; }
+
+        .booking-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 15px; }
+        .detail-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #555; }
+        .detail-item i { color: #2c3e50; width: 16px; }
+
+        .booking-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .action-btn { padding: 7px 14px; border: none; border-radius: 7px; cursor: pointer; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 5px; transition: opacity 0.2s; }
+        .action-btn:hover { opacity: 0.85; }
+        .btn-feedback { background: #28a745; color: white; }
+        .btn-view { background: #007bff; color: white; }
+
+        .empty-state { text-align: center; padding: 60px 20px; color: #6c757d; }
+        .empty-state i { font-size: 60px; color: #dee2e6; margin-bottom: 20px; }
+        .empty-state h3 { font-size: 22px; color: #2c3e50; margin-bottom: 10px; }
+        .empty-state a { display: inline-block; margin-top: 15px; background: #2c3e50; color: white; padding: 10px 25px; border-radius: 25px; text-decoration: none; font-weight: 600; }
+
+        /* Feedback Modal Styles */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; }
+        .feedback-form { background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; position: relative; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #6c757d; border: none; background: transparent; }
+        .success-message { background: #d4edda; color: #155724; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: none; text-align: center; }
+        .rating-section label { display: block; margin-bottom: 10px; font-weight: 600; color: #2c3e50; }
+        .star-rating { display: flex; gap: 10px; font-size: 32px; cursor: pointer; }
+        .star { color: #ddd; transition: color 0.2s; }
+        .star.active { color: #ffc107; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; }
+        .form-group textarea { width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 10px; min-height: 100px; }
+        .submit-btn { width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .submit-btn:hover { background: #218838; }
+
+        @media (max-width: 768px) {
+            .stats-section { grid-template-columns: 1fr 1fr; }
+            .bookings-content { padding: 20px; }
+            header { padding: 10px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="{% url 'home' %}" class="logo">Local Man Power<span> Service Provider</span></a>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <button onclick="history.back()" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.4); color:white; padding:7px 16px; border-radius:20px; cursor:pointer; font-size:14px; margin-left:10px;">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        
+        <div class="user-profile">
+            <div class="profile-btn" onclick="toggleDrop()">
+                <div class="profile-avatar" id="navAvt">U</div>
+                <span id="navNm">User</span>
+                <i class="fas fa-chevron-down"></i>
+                <div class="dropdown-menu-custom" id="dd">
+                    <div class="dd-header" style="padding: 16px 18px; border-bottom: 1px solid #f1f5f9; cursor: default;">
+                        <div style="font-weight: 700; color: #1e293b; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="ddName">User</div>
+                        <div style="color: #64748b; font-size: 0.8rem; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="ddEmail">user@example.com</div>
+                    </div>
+                    <a href="{% url 'provider_dashboard' %}" id="ddDashboard" style="display:none;"><i class="fas fa-chart-pie"></i> Dashboard</a>
+                    <a href="{% url 'my_profile' %}"><i class="fas fa-user-circle"></i> My Profile</a>
+                    <a href="{% url 'my_bookings' %}" id="ddMyBookings"><i class="fas fa-list"></i> My Bookings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="logout" href="#" onclick="doLogout();return false;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        const uStr = localStorage.getItem('currentUser');
+        if (uStr) {
+            const u = JSON.parse(uStr);
+            const userObj = u.user || u;
+            if (userObj.userType === 'provider') {
+                document.getElementById('ddDashboard').style.display = 'flex';
+                document.getElementById('ddMyBookings').href = "{% url 'provider_dashboard' %}";
+            }
+            const nm = userObj.fullName || userObj.first_name || userObj.username || 'User';
+            const em = userObj.email || 'user@example.com';
+            document.getElementById('navNm').textContent = nm;
+            document.getElementById('ddName').textContent = nm;
+            document.getElementById('ddEmail').textContent = em;
+            document.getElementById('navAvt').textContent = nm.substring(0,2).toUpperCase();
+        }
+    } catch(e) {}
+});
+function toggleDrop(){
+    const dd = document.getElementById('dd');
+    dd.classList.toggle('show');
+    document.querySelector('.profile-btn').classList.toggle('active');
+}
+document.addEventListener('click', e => {
+    const dd = document.getElementById('dd');
+    const pb = document.querySelector('.profile-btn');
+    if (pb && dd && !e.target.closest('.profile-btn') && !e.target.closest('.dropdown-menu-custom')) {
+        dd.classList.remove('show');
+        pb.classList.remove('active');
+    }
+});
+function doLogout(){
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('authToken');
+    location.href = "{% url 'login' %}";
+}
+</script>
+
+<div class="bookings-container">
+    <div class="bookings-header">
+        <h1>My Bookings</h1>
+        <p>All your service bookings in one place</p>
+    </div>
+    <div class="bookings-content">
+        <div class="stats-section">
+            <div class="stat-card"><i class="fas fa-calendar-check"></i><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total</div></div>
+            <div class="stat-card"><i class="fas fa-clock"></i><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
+            <div class="stat-card"><i class="fas fa-check-circle"></i><div class="stat-value" id="statConfirmed">0</div><div class="stat-label">Confirmed</div></div>
+            <div class="stat-card"><i class="fas fa-star"></i><div class="stat-value" id="statCompleted">0</div><div class="stat-label">Completed</div></div>
+        </div>
+
+        <div class="filter-tabs">
+            <div class="filter-tab active" onclick="filterBy('all', this)"><i class="fas fa-list"></i> All</div>
+            <div class="filter-tab" onclick="filterBy('Pending', this)"><i class="fas fa-clock"></i> Pending</div>
+            <div class="filter-tab" onclick="filterBy('Confirmed', this)"><i class="fas fa-check"></i> Confirmed</div>
+            <div class="filter-tab" onclick="filterBy('Completed', this)"><i class="fas fa-check-double"></i> Completed</div>
+        </div>
+
+        <div class="bookings-list" id="bookingsList">
+            <div class="empty-state"><i class="fas fa-spinner fa-spin"></i><h3>Loading bookings...</h3></div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'core/js/api-service.js' %}"></script>
+<script>
+let allBookings = [];
+let currentFilter = 'all';
+
+document.addEventListener('DOMContentLoaded', loadBookings);
+
+async function loadBookings() {
+    try {
+        const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        if (!user) { window.location.href = "{% url 'login' %}"; return; }
+
+        let bookings = [];
+
+        // Try API
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            const res = await fetch('/api/bookings/', {
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+            });
+            const data = await res.json();
+            if (data.success && data.bookings) {
+                bookings = data.bookings;
+            }
+        }
+
+        // Fallback: try by username
+        if (!bookings.length && user.username) {
+            const res = await fetch(`/api/bookings/customer/${user.username}/`);
+            const data = await res.json();
+            if (data.success) bookings = data.bookings || [];
+        }
+
+        allBookings = bookings;
+        updateStats();
+        renderBookings();
+    } catch(e) {
+        console.error(e);
+        document.getElementById('bookingsList').innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-exclamation-circle"></i>
+                <h3>Could not load bookings</h3>
+                <p>Please try refreshing the page.</p>
+            </div>`;
+    }
+}
+
+function updateStats() {
+    document.getElementById('statTotal').textContent = allBookings.length;
+    document.getElementById('statPending').textContent = allBookings.filter(b => b.status === 'Pending').length;
+    document.getElementById('statConfirmed').textContent = allBookings.filter(b => ['Confirmed','Accepted'].includes(b.status)).length;
+    document.getElementById('statCompleted').textContent = allBookings.filter(b => b.status === 'Completed').length;
+}
+
+function filterBy(filter, el) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    renderBookings();
+}
+
+function renderBookings() {
+    const list = document.getElementById('bookingsList');
+    const filtered = currentFilter === 'all' ? allBookings : 
+                     (currentFilter === 'Confirmed' ? allBookings.filter(b => ['Confirmed','Accepted'].includes(b.status)) : 
+                     allBookings.filter(b => b.status === currentFilter));
+
+    if (!filtered.length) {
+        list.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-calendar"></i>
+                <h3>No bookings found</h3>
+                <p>${currentFilter === 'all' ? "You haven't made any bookings yet." : `No ${currentFilter.toLowerCase()} bookings.`}</p>
+                <a href="{% url 'home' %}">Browse Services</a>
+            </div>`;
+        return;
+    }
+
+    list.innerHTML = filtered.map(b => {
+        const providerName = b.provider_name || (b.provider && b.provider.name) || 'Service Provider';
+        const serviceType = b.provider_service || (b.provider && b.provider.service_type) || 'Service';
+        const statusClass = `status-${b.status}`;
+        const badgeClass = `badge-${b.status}`;
+        return `
+        <div class="booking-card ${statusClass}">
+            <div class="booking-top">
+                <div>
+                    <div class="booking-id">${b.bookingId || b.id || 'N/A'}</div>
+                    <div class="booking-provider">${providerName}</div>
+                    <div class="booking-service">${serviceType}</div>
+                </div>
+                <span class="status-badge ${badgeClass}">${b.status}</span>
+            </div>
+            <div class="booking-details">
+                <div class="detail-item"><i class="fas fa-calendar"></i> ${b.date || 'N/A'}</div>
+                <div class="detail-item"><i class="fas fa-clock"></i> ${b.time || 'N/A'}</div>
+                <div class="detail-item"><i class="fas fa-map-marker-alt"></i> ${b.address || 'N/A'}</div>
+                <div class="detail-item"><i class="fas fa-rupee-sign"></i> ₹${b.service_amount || 0}</div>
+            </div>
+            <div class="booking-actions">
+                ${b.status !== 'Cancelled' ? `<button class="action-btn btn-feedback" onclick="openFeedbackModal('${b.bookingId}', '${b.provider ? b.provider.id : ''}', '${b.status}')"><i class="fas fa-star"></i> Feedback</button>` : ''}
+                <button class="action-btn btn-view" onclick="alert('Booking: ${b.bookingId}\\nStatus: ${b.status}\\nAmount: ₹${b.service_amount}')"><i class="fas fa-eye"></i> Details</button>
+            </div>
+        </div>`;
+    }).join('');
+}
+</script>
+
+<!-- Feedback Modal -->
+<div id="feedbackModal" class="modal-overlay">
+    <div class="feedback-form">
+        <button class="close-modal" onclick="closeFeedbackModal()">&times;</button>
+        <h3 style="margin-top:0; color:#2c3e50; margin-bottom:20px;">Rate Your Experience</h3>
+        
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i> Thank you for your feedback!
+        </div>
+
+        <div class="rating-section">
+            <label>Overall Rating</label>
+            <div class="star-rating" id="starRating" onmouseleave="updateStarDisplay()">
+                <span class="star" data-rating="1" onclick="selectRating(1)" onmouseenter="highlightStars(1)"><i class="fas fa-star"></i></span>
+                <span class="star" data-rating="2" onclick="selectRating(2)" onmouseenter="highlightStars(2)"><i class="fas fa-star"></i></span>
+                <span class="star" data-rating="3" onclick="selectRating(3)" onmouseenter="highlightStars(3)"><i class="fas fa-star"></i></span>
+                <span class="star" data-rating="4" onclick="selectRating(4)" onmouseenter="highlightStars(4)"><i class="fas fa-star"></i></span>
+                <span class="star" data-rating="5" onclick="selectRating(5)" onmouseenter="highlightStars(5)"><i class="fas fa-star"></i></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Your Feedback (Optional)</label>
+            <textarea id="feedbackText" placeholder="Share your experience with this service..."></textarea>
+        </div>
+
+        <div class="form-group" style="display:flex; align-items:center; gap:10px;" id="markCompleteContainer">
+            <input type="checkbox" id="markCompletedCheck" style="width:20px; height:20px; cursor:pointer;">
+            <label for="markCompletedCheck" style="margin:0; cursor:pointer;">Mark as completed (work has been done)</label>
+        </div>
+
+        <button class="submit-btn" id="submitFeedbackBtn" onclick="submitFeedbackForm()">
+            <i class="fas fa-paper-plane"></i> Submit Feedback
+        </button>
+    </div>
+</div>
+
+<script>
+let fbBookingId = null;
+let fbProviderId = null;
+let fbRating = 0;
+
+function openFeedbackModal(bId, pId, status) {
+    fbBookingId = bId;
+    fbProviderId = pId;
+    fbRating = 0;
+    document.getElementById('feedbackText').value = '';
+    
+    // Checkbox logic
+    const check = document.getElementById('markCompletedCheck');
+    if (status === 'Completed') {
+        check.checked = true;
+        check.disabled = true;
+    } else {
+        check.checked = false;
+        check.disabled = false;
+    }
+    
+    updateStarDisplay();
+    document.getElementById('feedbackModal').style.display = 'flex';
+}
+
+function closeFeedbackModal() {
+    document.getElementById('feedbackModal').style.display = 'none';
+}
+
+function selectRating(r) { fbRating = r; updateStarDisplay(); }
+function highlightStars(r) {
+    document.querySelectorAll('#feedbackModal .star').forEach((s, i) => {
+        s.classList.toggle('active', i < r);
+    });
+}
+function updateStarDisplay() { highlightStars(fbRating); }
+
+async function submitFeedbackForm() {
+    if (fbRating === 0) { alert('Please select a rating'); return; }
+    
+    const btn = document.getElementById('submitFeedbackBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+    
+    try {
+        const payload = { rating: fbRating, comment: document.getElementById('feedbackText').value };
+        if (fbProviderId) payload.providerId = fbProviderId;
+        else payload.bookingId = fbBookingId;
+        
+        await window.apiService.submitFeedback(payload);
+        
+        const check = document.getElementById('markCompletedCheck');
+        if (check.checked && !check.disabled) {
+            await window.apiService.updateBookingStatus(fbBookingId, 'Completed');
+        }
+        
+        document.getElementById('successMessage').style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-check"></i> Success';
+        
+        setTimeout(() => {
+            closeFeedbackModal();
+            loadBookings(); // Automatically reload the booking status across UI
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Feedback';
+            document.getElementById('successMessage').style.display = 'none';
+        }, 1500);
+        
+    } catch (e) {
+        console.error(e);
+        alert('Error submitting feedback');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Feedback';
+    }
+}
+</script>
+
+{% include "core/chatbot_include.html" %}
+</body>
+</html>

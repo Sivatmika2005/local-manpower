@@ -1,0 +1,8 @@
+Found 19 test(s).
+[DEBUG] Register validate data: ['username', 'email', 'password', 'user_type', 'phone']
+[REGISTER] User saved: id=3 username=testuser type=customer
+[DEBUG] Register validate data: ['username', 'email', 'password', 'user_type', 'fullName', 'service_type', 'location', 'price_per_hour', 'upi_id']
+[REGISTER] User saved: id=4 username=provider1 type=provider
+Provider saved: 1
+[REGISTER] Provider details: name='Test Provider' type='electrician' upi='test@upi' loc='Mumbai' price=500.00
+[OTP SMS] To: 9876543210  OTP: 987162

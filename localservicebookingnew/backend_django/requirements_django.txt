@@ -1,0 +1,8 @@
+Django>=5.0
+PyMySQL
+djangorestframework
+djangorestframework-simplejwt
+django-cors-headers
+python-dotenv
+qrcode
+pillow

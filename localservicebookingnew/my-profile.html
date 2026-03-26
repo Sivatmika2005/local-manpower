@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Local Service Provider</title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="home.css">
+
+    <!-- Session Manager -->
+    <script src="../session-manager.js"></script>
+
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 100px auto 50px;
+            padding: 20px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 50px 40px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .profile-header .large-avatar {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+            object-fit: cover;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            background: white;
+        }
+
+        .profile-header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .profile-header p {
+            margin: 8px 0 0;
+            opacity: 0.9;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .profile-body {
+            padding: 50px;
+        }
+
+        .info-section-title {
+            font-size: 18px;
+            color: #1e293b;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .info-icon {
+            width: 45px;
+            height: 45px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #334155;
+            font-size: 18px;
+        }
+
+        .info-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-content label {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .info-content span {
+            font-size: 17px;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .profile-actions {
+            margin-top: 50px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-edit {
+            background: #2c3e50;
+            color: white;
+            border: none;
+        }
+
+        .btn-edit:hover {
+            background: #1a252f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-back {
+            background: #f8f9fa;
+            color: #2c3e50;
+            border: 1px solid #ddd;
+        }
+
+        .btn-back:hover {
+            background: #eee;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 600px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-header {
+                padding: 30px 20px;
+            }
+
+            .profile-body {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <header>
+        <div class="logo">Local Service<span> Provider</span></div>
+        <nav>
+            <a href="home.html" id="navHomeLink">Home</a>
+            <a href="home.html#services">Services</a>
+            <a href="about.html">About</a>
+            <a href="home.html#contact">Contact</a>
+        </nav>
+    </header>
+
+    <div class="profile-container">
+        <div class="profile-card">
+            <div class="profile-header">
+                <img id="displayAvatar" src="https://picsum.photos/seed/profile/120/120.jpg" alt="Profile"
+                    class="large-avatar">
+                <h1 id="displayFullName">Loading...</h1>
+                <p id="displayUserType">User</p>
+            </div>
+
+            <div class="profile-body">
+                <h3 class="info-section-title">Personal Information</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fas fa-user"></i></div>
+                        <div class="info-content">
+                            <label>Full Name</label>
+                            <span id="labelFullName">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fas fa-at"></i></div>
+                        <div class="info-content">
+                            <label>Username</label>
+                            <span id="labelUsername">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                        <div class="info-content">
+                            <label>Email Address</label>
+                            <span id="labelEmail">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fas fa-phone"></i></div>
+                        <div class="info-content">
+                            <label>Phone Number</label>
+                            <span id="labelPhone">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="info-item" id="providerSpecific" style="display: none;">
+                        <div class="info-icon"><i class="fas fa-briefcase"></i></div>
+                        <div class="info-content">
+                            <label>Business Name</label>
+                            <span id="labelBusinessName">N/A</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fas fa-check-circle"></i></div>
+                        <div class="info-content">
+                            <label>Status</label>
+                            <span id="labelStatus" style="color: #27ae60;">Active</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-actions">
+                    <a href="home.html" class="action-btn btn-back" id="btnBack">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                    <button class="action-btn btn-edit" onclick="editProfile()">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <p>📞+91 123-456-7890 | 📧 localserviceprovider@gmail.com</p>
+        <p>© 2026 Local Service Provider</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            populateProfile();
+        });
+
+        function populateProfile() {
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+            if (!user || !user.userId) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Set avatar
+            document.getElementById('displayAvatar').src = `https://picsum.photos/seed/${user.username}/120/120.jpg`;
+
+            // Populate labels
+            document.getElementById('displayFullName').textContent = user.fullName || 'User';
+            document.getElementById('displayUserType').textContent = (user.userType || 'customer').charAt(0).toUpperCase() + (user.userType || 'customer').slice(1);
+
+            document.getElementById('labelFullName').textContent = user.fullName || 'N/A';
+            document.getElementById('labelUsername').textContent = user.username || 'N/A';
+            document.getElementById('labelEmail').textContent = user.email || 'N/A';
+            document.getElementById('labelPhone').textContent = user.phone || 'N/A';
+            document.getElementById('labelStatus').textContent = user.status || 'Active';
+
+            // Show provider info if applicable
+            if (user.userType === 'provider') {
+                document.getElementById('providerSpecific').style.display = 'flex';
+                document.getElementById('labelBusinessName').textContent = user.businessName || 'N/A';
+                
+                // Hide home link for providers
+                const navHome = document.getElementById('navHomeLink');
+                if (navHome) navHome.style.display = 'none';
+
+                // Update back button for providers
+                const btnBack = document.getElementById('btnBack');
+                if (btnBack) btnBack.href = 'provider_dashboard.html';
+            }
+        }
+
+        function editProfile() {
+            alert('Edit Profile functionality coming soon!');
+        }
+    </script>
+
+</body>
+
+</html>

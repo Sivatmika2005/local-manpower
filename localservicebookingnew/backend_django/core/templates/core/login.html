@@ -1,0 +1,394 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        /* Keyframes for animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f8f9fa; /* Dark background to contrast the image */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-container {
+            width: 300px;
+            height: 400px;
+            background: url('your-image.jpg') no-repeat center center;
+            background-size: cover;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(44, 62, 80, 0.3);
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out; /* Main entry animation */
+        }
+
+        .overlay {
+            background: #2c3e50;/* Darker overlay for a sleek look */
+            backdrop-filter: blur(2px); /* Slight blur effect */
+            height: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight:15cm;
+            letter-spacing: 1px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 25px; /* Rounded pill shape */
+            background: rgba(255, 255, 255, 0.9);
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            background: #fff;
+            transform: scale(1.02);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color:#fff; /* Electric yellow/gold */
+            color:#2c3e50;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: transform 0.2s, background-color 0.2s;
+            
+        }
+
+        button:hover {
+            
+            background-color: #a5bcda;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.2);;
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.8em;
+        
+        }
+
+        a { color:white; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .error-message {
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            display: none;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Scripts -->
+    <script src="{% static 'core/js/session-manager.js' %}"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="{% static 'core/js/firebase-config.js' %}"></script>
+</head>
+<body>
+
+<div class="login-container">
+    <div class="overlay">
+        <h2>LOGIN</h2>
+        <div id="errorMessage" class="error-message"></div>
+        <form onsubmit="return loginSuccess(event)">
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Username" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+            <button type="submit" id="loginBtn">Login</button>
+        </form>
+        <div class="links">
+            <a href="{% url 'forgotpass' %}">Forgot Password</a><br><br>
+            <a href="{% url 'signup' %}">Sign Up</a><br><br>
+        </div>
+    </div>
+</div>
+
+<!-- Include API Service -->
+<script src="{% static 'core/js/api-service.js' %}"></script>
+
+<script>
+// Firebase Auth Logic
+function handleFirebaseUser(user) {
+    const sessionUser = {
+        userId: user.uid,
+        fullName: user.displayName || user.phoneNumber || 'Firebase User',
+        username: user.email || user.phoneNumber || user.uid,
+        userType: 'customer', // Default
+        email: user.email,
+        phone: user.phoneNumber
+    };
+    
+    // Attempt backend sync
+    if (window.apiService) {
+        apiService.firebaseSync && apiService.firebaseSync(sessionUser).then(res => {
+            if (res.success) {
+                Object.assign(sessionUser, res.data.user);
+            }
+            proceedWithLogin(sessionUser);
+        }).catch(err => {
+            console.error("Backend sync failed:", err);
+            proceedWithLogin(sessionUser); // Fallback
+        });
+    } else {
+        proceedWithLogin(sessionUser);
+    }
+}
+
+function proceedWithLogin(user) {
+    if (window.sessionManager) {
+        window.sessionManager.updateUserSession(user);
+    } else {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+    }
+    
+    alert(`Welcome ${user.fullName}!`);
+    
+    if (user.userType === 'admin') window.location.href = "{% url 'admin_dashboard' %}";
+    else if (user.userType === 'provider') window.location.href = "{% url 'provider_dashboard' %}";
+    else window.location.href = "/";
+}
+
+async function googleLogin() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    try {
+        const result = await firebaseAuth.signInWithPopup(provider);
+        handleFirebaseUser(result.user);
+    } catch (error) {
+        document.getElementById('errorMessage').textContent = error.message;
+        document.getElementById('errorMessage').style.display = 'block';
+    }
+}
+
+async function facebookLogin() {
+    const provider = new firebase.auth.FacebookAuthProvider();
+    try {
+        const result = await firebaseAuth.signInWithPopup(provider);
+        handleFirebaseUser(result.user);
+    } catch (error) {
+        document.getElementById('errorMessage').textContent = error.message;
+        document.getElementById('errorMessage').style.display = 'block';
+    }
+}
+
+async function phoneLogin() {
+    const phoneNumber = prompt("Enter phone number with country code (e.g., +1234567890):");
+    if (!phoneNumber) return;
+    
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+        'size': 'invisible'
+    });
+    
+    try {
+        const confirmationResult = await firebaseAuth.signInWithPhoneNumber(phoneNumber, window.recaptchaVerifier);
+        const code = prompt("Enter the verification code sent to your phone:");
+        if (code) {
+            const result = await confirmationResult.confirm(code);
+            handleFirebaseUser(result.user);
+        }
+    } catch (error) {
+        document.getElementById('errorMessage').textContent = error.message;
+        document.getElementById('errorMessage').style.display = 'block';
+        if (window.recaptchaVerifier) window.recaptchaVerifier.clear();
+    }
+}
+
+async function loginSuccess(event) {
+    event.preventDefault();
+    
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const loginBtn = document.getElementById('loginBtn');
+    const errorMessage = document.getElementById('errorMessage');
+    
+    // Show loading state
+    loginBtn.classList.add('loading');
+    loginBtn.textContent = 'Logging in...';
+    errorMessage.style.display = 'none';
+    
+    try {
+        console.log('Attempting login with:', { username, password });
+        
+        // First try backend API if available
+        if (window.apiService) {
+            try {
+                let response;
+                
+                response = await apiService.login(username, password);
+                
+                if (response.success) {
+                    const user = response.data.user;
+                    // Persist session to localStorage
+                    if (window.sessionManager) {
+                        window.sessionManager.updateUserSession(user);
+                    } else {
+                        localStorage.setItem('currentUser', JSON.stringify(user));
+                    }
+                    
+                    alert(`Welcome ${user.fullName}!`);
+                    
+                    // Redirect based on user type
+                    switch (user.userType) {
+                        case 'admin':
+                            window.location.href = "{% url 'admin_dashboard' %}";
+                            break;
+                        case 'provider':
+                            window.location.href = "{% url 'provider_dashboard' %}";
+                            break;
+                        case 'customer':
+                            window.location.href = "/";
+                            break;
+                        default:
+                            window.location.href = "/";
+                    }
+                    return;
+                }
+            } catch (apiError) {
+                console.log('Backend not available, falling back to localStorage');
+            }
+        }
+        
+        // Fallback to localStorage logic
+        console.log('Using localStorage authentication');
+        
+
+        
+        // Check registered users in localStorage
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        console.log('Available users:', users);
+        
+        const user = users.find(u => u.username === username && u.password === password);
+        console.log('Found user:', user);
+        
+        if (user) {
+            // Store user info for session
+            const sessionUser = {
+                userId: user.userId,
+                fullName: user.fullName,
+                username: user.username,
+                userType: user.userType,
+                status: user.status || 'active',
+                email: user.email,
+                phone: user.phone
+            };
+            localStorage.setItem('currentUser', JSON.stringify(sessionUser));
+            alert(`Welcome ${user.fullName}!`);
+            
+            // Redirect based on user type
+            if (user.userType === 'provider') {
+                window.location.href = "{% url 'provider_dashboard' %}";
+            } else {
+                window.location.href = "/";
+            }
+            return;
+        }
+        
+        // If no user found
+        throw new Error('Invalid username or password!');
+        
+    } catch (error) {
+        console.error('Login error:', error);
+        errorMessage.textContent = error.message || 'Login failed. Please try again.';
+        errorMessage.style.display = 'block';
+        
+        // Reset button state
+        loginBtn.classList.remove('loading');
+        loginBtn.textContent = 'Login';
+    }
+    
+    return false;
+}
+
+
+
+// Check if user is already logged in
+window.addEventListener('DOMContentLoaded', function() {
+    // Try API service first, then fallback to localStorage
+    let currentUser = null;
+    
+    if (window.apiService) {
+        currentUser = apiService.getCurrentUserFromStorage();
+    }
+    
+    if (!currentUser) {
+        currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    }
+    
+    if (currentUser && currentUser.userId) {
+        // User is already logged in, redirect to appropriate page
+        switch (currentUser.userType) {
+            case 'admin':
+                window.location.href = "{% url 'admin_dashboard' %}";
+                break;
+            case 'provider':
+                window.location.href = "{% url 'provider_dashboard' %}";
+                break;
+            case 'customer':
+                window.location.href = "/";
+                break;
+            default:
+                window.location.href = "/";
+        }
+    }
+});
+
+</script>
+
+</body>
+</html>
