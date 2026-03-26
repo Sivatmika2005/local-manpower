@@ -126,7 +126,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-Your Name - [@yourusername](https://github.com/yourusername)
+Sowrnalatha A, Sivatmika A,Vidhya S
+B.E - Computer Science and Engineering
 
 ## Acknowledgments
 
